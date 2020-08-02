@@ -1,9 +1,18 @@
 require('dotenv').config();
 const { Telegraf } = require('telegraf');
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
-bot.start((ctx) => ctx.reply('Welcome!'))
-bot.help((ctx) => ctx.reply('Send me a sticker'))
-bot.on('sticker', (ctx) => ctx.reply('👍'))
-bot.hears('hi', (ctx) => ctx.reply('Hey there'))
-bot.launch()
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// Handler for /start command.
+bot.start(ctx => ctx.reply('Welcome!'));
+
+// Handler for /help command.
+bot.help(ctx => ctx.reply('Send me a sticker'));
+
+// Registers middleware for provided update type.
+bot.on('sticker', ctx => ctx.reply('👍'));
+
+// Registers middleware for handling text messages.
+bot.hears('hi', ctx => ctx.reply('Hey there'));
+
+bot.launch();
