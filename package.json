@@ -13,13 +13,28 @@
     "url": "https://github.com/12-cactus/espi/issues"
   },
   "main": "index.js",
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js ./"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "husky": "^4.2.5",
+    "jest": "^26.2.2"
   },
   "keywords": [
     "espinoso",
