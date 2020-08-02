@@ -5,7 +5,8 @@
   "rules": {
     "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-    "no-multi-spaces": ["error", { "ignoreEOLComments": true, "exceptions": { "VariableDeclarator": true } }]
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true, "exceptions": { "VariableDeclarator": true } }],
+    "no-underscore-dangle": ["error", { "allow": ["__"] }]
   },
   "env": {
     "node": true,

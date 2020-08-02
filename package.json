@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0",
-    "telegraf": "^3.38.0"
+    "telegraf": "^3.38.0",
+    "y18n": "^4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
