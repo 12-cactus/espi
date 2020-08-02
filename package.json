@@ -1,0 +1,29 @@
+{
+  "name": "espi",
+  "version": "1.0.0-rc",
+  "description": "Unfriendly Bot for Telegram ",
+  "author": "Leandro Di Lorenzo <leandro.jdl@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://github.com/12-cactus/espi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/12-cactus/espi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/12-cactus/espi/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "telegraf": "^3.38.0"
+  },
+  "keywords": [
+    "espinoso",
+    "telegram",
+    "bot"
+  ]
+}
