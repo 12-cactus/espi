@@ -3,7 +3,7 @@ name: Docker Latest
 on:
   push:
     branches:
-      - $default-branch
+      - master
 
 jobs:
   test:
