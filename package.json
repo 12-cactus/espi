@@ -19,7 +19,8 @@
     }
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node start-webhook.js",
+    "dev": "node start-polling.js",
     "test": "jest",
     "lint": "eslint --ext .js ./"
   },
