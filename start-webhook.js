@@ -1,13 +1,27 @@
+const express = require('express');
 const bot = require('./src/bot');
 
-const { WEBHOOK_DOMAIN, WEBHOOK_PORT } = process.env;
+const { BOT_DOMAIN, EXPRESS_PORT = 3000 } = process.env;
 
-if (!WEBHOOK_DOMAIN) process.exit('You have to define WEBHOOK_DOMAIN env var');
-if (!WEBHOOK_PORT) process.exit('You have to define WEBHOOK_PORT env var');
+if (!BOT_DOMAIN) {
+  // eslint-disable-next-line no-console
+  console.error('You have to define BOT_DOMAIN env var');
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
+}
 
-bot.launch({
-  webhook: {
-    domain: WEBHOOK_DOMAIN,
-    port: WEBHOOK_PORT,
-  },
+const app = express();
+
+const path = Math.random().toString(36).substr(2, 10);
+bot.telegram.setWebhook(`${BOT_DOMAIN}/${path}`);
+app.use(bot.webhookCallback(`/${path}`));
+
+app.get('/', async (req, res) => {
+  const me = await bot.telegram.getMe();
+  res.send(`I'm ${me.first_name}`);
+});
+
+app.listen(EXPRESS_PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Running on ${EXPRESS_PORT}`);
 });
