@@ -26,7 +26,7 @@
     "dev": "node start-polling.js",
     "test": "jest",
     "lint": "eslint --ext .js ./",
-    "tunnel": "lt -h 'http://serverless.social' -p 80 --subdomain espi"
+    "tunnel": "sh tunnel.sh"
   },
   "dependencies": {
     "axios": "^0.19.2",
