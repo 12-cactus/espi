@@ -5,7 +5,12 @@ const holidays = require('./features/holidays');
 
 const { __ } = y18n({ locale: 'es' });
 
-if (!process.env.BOT_TOKEN) process.exit('You have to define BOT_TOKEN env var');
+if (!process.env.BOT_TOKEN) {
+  // eslint-disable-next-line no-console
+  console.error('You have to define BOT_TOKEN env var');
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
+}
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 

@@ -1,7 +1,11 @@
 {
   "parser": "babel-eslint",
   "plugins": ["jest"],
-  "extends": ["airbnb-base", "plugin:jest/recommended"],
+  "extends": [
+    "airbnb-base",
+    "plugin:node/recommended",
+    "plugin:jest/recommended"
+  ],
   "rules": {
     "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
