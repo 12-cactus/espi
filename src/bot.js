@@ -21,11 +21,16 @@ bot.start(ctx => ctx.reply('Welcome!'));
 bot.help(ctx => ctx.reply('Send me a sticker'));
 
 // Registers middleware for provided update type.
-bot.on('sticker', ctx => ctx.reply('👍'));
+// bot.on('sticker', ctx => ctx.reply('👍'));
 
 // Registers middleware for handling text messages.
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 bot.hears(/^espi +feriados/, holidays);
+bot.hears('facu', (ctx) => {
+  if (ctx.update.message || !ctx.update.message.includes('la facu')) {
+    ctx.replyWithSticker('CAACAgEAAxkBAAIIzF8t4xOIKV9I9W1AJrRxWihgXb9oAAIDAAMgk_oQHC0owUBZzF8aBA');
+  }
+});
 
 module.exports = bot;
