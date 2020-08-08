@@ -5,4 +5,9 @@ const maybeFacu = async (ctx) => {
   return ctx.replyWithSticker(sticker.file_id);
 };
 
-module.exports = { maybeFacu };
+const iWillPaintYourDog = async (ctx) => {
+  const sticker = await stickers.find(ctx, 'docecactus', '🐺');
+  return ctx.replyWithSticker(sticker.file_id);
+};
+
+module.exports = { maybeFacu, iWillPaintYourDog };

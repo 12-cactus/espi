@@ -32,5 +32,6 @@ bot.hears(/facu/i, async (ctx, next) => {
   if (ctx.match.input.toLowerCase().includes('la facu')) return next();
   return stickers.maybeFacu(ctx);
 });
+bot.hears(/te pinto el perro/i, stickers.iWillPaintYourDog);
 
 module.exports = bot;
