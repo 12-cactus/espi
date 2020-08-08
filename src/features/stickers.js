@@ -10,4 +10,13 @@ const iWillPaintYourDog = async (ctx) => {
   return ctx.replyWithSticker(sticker.file_id);
 };
 
-module.exports = { maybeFacu, iWillPaintYourDog };
+const patternMatching = async (ctx) => {
+  const sticker = await stickers.find(ctx, 'docecactus', '🖕');
+  return ctx.replyWithSticker(sticker.file_id);
+};
+
+module.exports = {
+  iWillPaintYourDog,
+  maybeFacu,
+  patternMatching,
+};

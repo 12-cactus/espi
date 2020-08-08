@@ -33,5 +33,6 @@ bot.hears(/facu/i, async (ctx, next) => {
   return stickers.maybeFacu(ctx);
 });
 bot.hears(/te pinto el perro/i, stickers.iWillPaintYourDog);
+bot.hears(/pattern matching/i, stickers.patternMatching);
 
 module.exports = bot;
