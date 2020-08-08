@@ -28,11 +28,14 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 bot.hears(/^espi +feriados/, holidays);
+
+// Reply With Stickers
 bot.hears(/facu/i, async (ctx, next) => {
+  // FIXME try to match this "not case" into regex trigger
   if (ctx.match.input.toLowerCase().includes('la facu')) return next();
-  return stickers.maybeFacu(ctx);
+  return stickers.replyWithStickerFrom12Cactus('👤')(ctx);
 });
-bot.hears(/te pinto el perro/i, stickers.iWillPaintYourDog);
-bot.hears(/pattern matching/i, stickers.patternMatching);
+bot.hears(/te pinto el perro/i, stickers.replyWithStickerFrom12Cactus('🐺'));
+bot.hears(/pattern matching/i, stickers.replyWithStickerFrom12Cactus('🖕'));
 
 module.exports = bot;

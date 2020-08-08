@@ -1,22 +1,8 @@
 const stickers = require('../lib/stickers');
 
-const maybeFacu = async (ctx) => {
-  const sticker = await stickers.find(ctx, 'docecactus', '👤');
+const replyWithStickerFrom12Cactus = emoji => async (ctx) => {
+  const sticker = await stickers.find(ctx, 'docecactus', emoji);
   return ctx.replyWithSticker(sticker.file_id);
 };
 
-const iWillPaintYourDog = async (ctx) => {
-  const sticker = await stickers.find(ctx, 'docecactus', '🐺');
-  return ctx.replyWithSticker(sticker.file_id);
-};
-
-const patternMatching = async (ctx) => {
-  const sticker = await stickers.find(ctx, 'docecactus', '🖕');
-  return ctx.replyWithSticker(sticker.file_id);
-};
-
-module.exports = {
-  iWillPaintYourDog,
-  maybeFacu,
-  patternMatching,
-};
+module.exports = { replyWithStickerFrom12Cactus };
