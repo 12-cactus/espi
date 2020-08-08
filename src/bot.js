@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const y18n = require('y18n');
 const holidays = require('./features/holidays');
+const stickers = require('./features/stickers');
 
 const { __ } = y18n({ locale: 'es' });
 
@@ -27,10 +28,14 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 bot.hears(/^espi +feriados/, holidays);
-bot.hears('facu', (ctx) => {
-  if (ctx.update.message || !ctx.update.message.includes('la facu')) {
-    ctx.replyWithSticker('CAACAgEAAxkBAAIIzF8t4xOIKV9I9W1AJrRxWihgXb9oAAIDAAMgk_oQHC0owUBZzF8aBA');
-  }
+
+// Reply With Stickers
+bot.hears(/facu/i, async (ctx, next) => {
+  // FIXME try to match this "not case" into regex trigger
+  if (ctx.match.input.toLowerCase().includes('la facu')) return next();
+  return stickers.replyWithStickerFrom12Cactus('👤')(ctx);
 });
+bot.hears(/te pinto el perro/i, stickers.replyWithStickerFrom12Cactus('🐺'));
+bot.hears(/pattern matching/i, stickers.replyWithStickerFrom12Cactus('🖕'));
 
 module.exports = bot;
