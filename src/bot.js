@@ -7,7 +7,6 @@ const stickers = require('./features/stickers');
 const { __ } = y18n({ locale: 'es' });
 
 if (!process.env.BOT_TOKEN) {
-  // eslint-disable-next-line no-console
   console.error('You have to define BOT_TOKEN env var');
   // eslint-disable-next-line no-process-exit
   process.exit(1);
