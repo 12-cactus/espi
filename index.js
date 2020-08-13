@@ -24,3 +24,5 @@ app.listen(EXPRESS_PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Running on ${EXPRESS_PORT}`);
 });
+
+// bot.launch(); // Uncomment to start bot in polling mode
