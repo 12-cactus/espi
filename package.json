@@ -22,11 +22,11 @@
     }
   },
   "scripts": {
-    "start": "node start-webhook.js",
-    "dev": "node start-polling.js",
+    "start": "node index.js",
+    "dev": "env BOT_DOMAIN=$(sh .scripts/grep-tunnel.sh) node index.js",
     "test": "jest",
     "lint": "eslint --ext .js ./",
-    "tunnel": "sh tunnel.sh"
+    "tunnel": "sh .scripts/start-tunnel.sh"
   },
   "dependencies": {
     "axios": "^0.19.2",
