@@ -1,6 +1,6 @@
 {
   "name": "espi",
-  "version": "1.0.0-rc",
+  "version": "0.1.0-rc",
   "description": "Unfriendly Bot for Telegram ",
   "author": "Leandro Di Lorenzo <leandro.jdl@gmail.com>",
   "license": "ISC",
@@ -22,18 +22,21 @@
     }
   },
   "scripts": {
-    "start": "node start-webhook.js",
-    "dev": "node start-polling.js",
+    "start": "node index.js",
+    "dev": "env BOT_DOMAIN=$(sh .scripts/echo-tunnel.sh) node index.js",
     "test": "jest",
     "lint": "eslint --ext .js ./",
-    "tunnel": "sh tunnel.sh"
+    "tunnel": "sh .scripts/start-tunnel.sh"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "date-fns": "^2.15.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "morgan": "^1.10.0",
     "telegraf": "^3.38.0",
+    "winston-ready": "^2.0.1",
     "y18n": "^4.0.0"
   },
   "devDependencies": {

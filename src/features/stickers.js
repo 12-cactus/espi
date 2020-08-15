@@ -1,11 +1,20 @@
-const stickers = require('../lib/stickers');
+const logger = require('winston-ready');
+const api = require('../api');
 
-const replyWithStickerFrom12Cactus = emoji => async (ctx) => {
-  const sticker = await stickers.find(ctx, 'docecactus', emoji);
-  if (sticker && sticker.file_id) {
-    return ctx.replyWithSticker(sticker.file_id);
+const find = async (collection, emoji) => {
+  try {
+    const path = encodeURI(`/sticker/${collection}/${emoji}`);
+    const { data } = await api.get(path);
+    return data.sticker.file_id;
+  } catch (error) {
+    logger.error(error);
+    return null;
   }
-  return null;
 };
 
-module.exports = { replyWithStickerFrom12Cactus };
+module.exports = {
+  find,
+  maybeFacu: async () => find('docecactus', '👤'),
+  paintedDog: async () => find('docecactus', '🐺'),
+  patternMatchingDan: async () => find('docecactus', '🖕'),
+};
