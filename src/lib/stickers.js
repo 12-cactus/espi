@@ -1,13 +1,14 @@
+const logger = require('winston-ready');
+const api = require('../api');
+
 const find = async (ctx, collection, emoji) => {
   try {
-    const stickers = await ctx.getStickerSet(collection);
-    const sticker = stickers.stickers.find(st => st.emoji === emoji);
-    if (!sticker) throw new Error('missing sticker');
-    return sticker;
+    const path = encodeURI(`/sticker/${collection}/${emoji}`);
+    const { data } = await api.get(path);
+    return data.sticker;
   } catch (error) {
-    console.error('something wrong');
-    console.error(error);
-    return null; // FIXME: no sé por qué esa mierda se rompe en prod en el start. Revisar.
+    logger.error(error);
+    return null;
   }
 };
 
