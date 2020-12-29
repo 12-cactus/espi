@@ -5,9 +5,9 @@ const format = require('date-fns/format');
 const parse = require('date-fns/parse');
 const { apis } = require('../config');
 
-const today = new Date();
+const today = () => new Date();
 
-const isAfterToday = holiday => isAfter(parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today), today);
+const isAfterToday = holiday => isAfter(parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()), today());
 
 const isProperHoliday = (holiday) => {
   const isNonWorking = ['inamovible', 'puente', 'trasladable'].includes(holiday.tipo);
@@ -18,8 +18,8 @@ const isProperHoliday = (holiday) => {
 };
 
 const toStringItem = (holiday) => {
-  const date = parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today);
-  const diff = differenceInDays(date, today);
+  const date = parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today());
+  const diff = differenceInDays(date, today());
 
   return `- *${format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
 };
@@ -37,7 +37,7 @@ const toStringItem = (holiday) => {
  * "id": "año-nuevo"
  */
 const holidays = async (ctx) => {
-  const url = apis.holidays.replace('{year}', today.getFullYear());
+  const url = apis.holidays.replace('{year}', today().getFullYear());
   const { data } = await axios.get(url);
   const days = data
     .filter(isAfterToday)
