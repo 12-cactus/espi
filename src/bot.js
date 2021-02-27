@@ -29,11 +29,7 @@ bot.hears('hi', ctx => ctx.reply(__`hi`));
 bot.hears(/^espi +feriados/, holidays);
 
 // Reply With Stickers
-bot.hears(/facu/i, async (ctx, next) => {
-  // FIXME try to match this "not case" into regex trigger
-  if (ctx.match.input.toLowerCase().includes('la facu')) return next();
-  return ctx.replyWithSticker(await stickers.maybeFacu());
-});
+bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));
 bot.hears(/pinto +\w+ +perro/i, async ctx => ctx.replyWithSticker(await stickers.paintedDog()));
 bot.hears(/pattern +matching/i, async ctx => ctx.replyWithSticker(await stickers.patternMatchingDan()));
 
