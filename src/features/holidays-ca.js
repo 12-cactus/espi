@@ -4,7 +4,9 @@ const isAfter = require('date-fns/isAfter');
 const format = require('date-fns/format');
 const { apisCA } = require('../config');
 const today = new Date();
+
 const isAfterTodayCa = holiday => isAfter(new Date(holiday.date), today);
+
 const toStringItem = (holiday) => {
     const date = new Date(holiday.date);
     const diff = differenceInDays(date, today);
