@@ -12,7 +12,7 @@ const toStringItem = (holiday) => {
   const date = new Date(holiday.date);
   const diff = differenceInDays(date, today);
   return `- *${format(date, 'dd MMM')}* ${holiday.nameFr} (${diff}d)`;
-}
+};
 // ----- ----- Exported Functions ----- -----
 
 /**
