@@ -9,6 +9,7 @@ const today = new Date();
 
 const isAfterToday = holiday => isAfter(parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today), today);
 
+
 const isProperHoliday = (holiday) => {
   const isNonWorking = ['inamovible', 'puente', 'trasladable'].includes(holiday.tipo);
   const isCristian = holiday.tipo === 'nolaborable'
@@ -23,6 +24,7 @@ const toStringItem = (holiday) => {
 
   return `- *${format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
 };
+
 
 // ----- ----- Exported Functions ----- -----
 
@@ -48,5 +50,8 @@ const holidays = async (ctx) => {
 
   ctx.replyWithMarkdown(content);
 };
+
+
+
 
 module.exports = holidays;
