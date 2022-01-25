@@ -1,5 +1,4 @@
 require('dotenv').config();
-const bodyParser = require('body-parser');
 const express = require('express');
 const logger = require('winston-ready');
 const morgan = require('morgan');
@@ -7,7 +6,6 @@ const morgan = require('morgan');
 // Config Express
 const app = express();
 app.use(morgan('combined', { stream: { write: message => logger.info(message) } }));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // Telegram Webhook
 app.use(require('./webhook'));
