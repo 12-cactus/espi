@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:12-alpine as builder
+FROM node:16-alpine as builder
 ENV NODE_ENV=production
 
 WORKDIR /opt/app
@@ -11,7 +11,7 @@ COPY src/ /opt/app/src/
 RUN npm ci
 
 # Deploy stage
-FROM node:12-alpine
+FROM node:16-alpine
 RUN apk add --no-cache bash=~5
 
 ENV NODE_ENV=production
