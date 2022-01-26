@@ -21,6 +21,7 @@
     "dev": "env BOT_DOMAIN=$(sh .scripts/echo-tunnel.sh) node index.js",
     "test": "jest",
     "lint": "eslint --ext .js ./",
+    "release": "dotenv release-it",
     "tunnel": "sh .scripts/start-tunnel.sh",
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
   },
@@ -40,13 +41,32 @@
     "@babel/eslint-parser": "^7.16.5",
     "@types/jest": "^27.4.0",
     "babel-eslint": "^10.1.0",
+    "dotenv-cli": "^4.1.1",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.0.0",
     "eslint-plugin-node": "^11.1.0",
     "husky": "^7.0.4",
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "release-it": "^14.12.4"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": [
+        "npm run lint"
+      ]
+    },
+    "git": {
+      "commitMessage": ":bookmark: v${version}"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "Release ${version}"
+    },
+    "npm": {
+      "publish": false
+    }
   },
   "keywords": [
     "espinoso",
