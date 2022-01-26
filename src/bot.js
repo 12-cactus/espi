@@ -36,4 +36,8 @@ bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeF
 bot.hears(/pinto +\w+ +perro/i, async ctx => ctx.replyWithSticker(await stickers.paintedDog()));
 bot.hears(/pattern +matching/i, async ctx => ctx.replyWithSticker(await stickers.patternMatchingDan()));
 
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
 module.exports = bot;
