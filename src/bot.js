@@ -36,6 +36,10 @@ bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeF
 bot.hears(/pinto +\w+ +perro/i, async ctx => ctx.replyWithSticker(await stickers.paintedDog()));
 bot.hears(/pattern +matching/i, async ctx => ctx.replyWithSticker(await stickers.patternMatchingDan()));
 
+// Let me google that
+const searchLink = q => encodeURI(`https://www.google.com/search?q=${q}`);
+bot.hears(/^(g|google)\s+(?<q>.+)/i, async ctx => ctx.reply(searchLink(ctx.match.groups.q)));
+
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
