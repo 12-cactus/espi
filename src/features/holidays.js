@@ -47,7 +47,7 @@ function isWorkday(date, holidays) {
  * Find Next Long Weekend
  * Recursive function over holidays array
  */
-function findNextLongWeekend(holidays) {
+function findNextLongWeekendBasedOn(holidays) {
   if (holidays.length === 0) return null;
   const [nextHoliday, ...restHolidays] = holidays;
 
@@ -66,7 +66,7 @@ function findNextLongWeekend(holidays) {
 
   return groupDays.length > 3
     ? { start: groupDays[0], end: groupDays[groupDays.length - 1] }
-    : findNextLongWeekend(restHolidays);
+    : findNextLongWeekendBasedOn(restHolidays);
 }
 
 // ----- ----- Exported Functions ----- -----
@@ -90,16 +90,20 @@ const holidaysAR = async (ctx) => {
   ctx.replyWithMarkdown(`🇦🇷 Próximos Feriados\n\n${days.join('\n')}`);
 };
 
-/**
- * Next Long Weekend AR
- */
-const nextLongWeekendAR = async (ctx) => {
+const findNextLongWeekendAR = async () => {
   const holidays = (await Promise.all([
     fetchHolidaysAR(currentYear()),
     fetchHolidaysAR(nextYear()),
   ])).flat();
 
-  const longWeekendFound = findNextLongWeekend(holidays);
+  return findNextLongWeekendBasedOn(holidays);
+};
+
+/**
+ * Next Long Weekend AR
+ */
+const nextLongWeekendAR = async (ctx) => {
+  const longWeekendFound = await findNextLongWeekendAR();
 
   const content = longWeekendFound
     ? `Próximo finde largo: *${fns.format(longWeekendFound.start, 'dd MMM')}-${fns.format(longWeekendFound.end, 'dd MMM')}*`
@@ -129,4 +133,5 @@ module.exports = {
   holidaysAR,
   holidaysCA,
   nextLongWeekendAR,
+  findNextLongWeekendAR,
 };
