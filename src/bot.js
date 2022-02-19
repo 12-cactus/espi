@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Telegraf } = require('telegraf');
 const y18n = require('y18n');
 
-const { holidaysAR, holidaysCA } = require('./features/holidays');
+const { holidaysAR, holidaysCA, nextLongWeekendAR } = require('./features/holidays');
 const stickers = require('./features/stickers');
 
 const { __ } = y18n({ locale: 'es' });
@@ -28,8 +28,11 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 // Registers middleware for handling text messages.
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
+
+// Espi commands
 bot.hears(/^espi +feriados/, holidaysAR);
 bot.hears(/^espi +(férié|ferie)/, holidaysCA);
+bot.hears(/^espi +finde +largo/, nextLongWeekendAR);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));

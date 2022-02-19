@@ -1,15 +1,15 @@
 const axios = require('axios').default;
-const differenceInDays = require('date-fns/differenceInDays');
-const isAfter = require('date-fns/isAfter');
-const format = require('date-fns/format');
-const parse = require('date-fns/parse');
+const fns = require('date-fns');
+
 const { apis, apisCA } = require('../config');
 
 const today = () => new Date();
+const currentYear = () => today().getFullYear();
+const nextYear = () => currentYear() + 1;
 
-const isAfterToday = holiday => isAfter(parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()), today());
+const isAfterToday = holiday => fns.isAfter(fns.parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()), today());
 
-const isAfterTodayCA = holiday => isAfter(new Date(holiday.date), today());
+const isAfterTodayCA = holiday => fns.isAfter(new Date(holiday.date), today());
 
 const isProperHoliday = (holiday) => {
   const isNonWorking = ['inamovible', 'puente', 'trasladable'].includes(holiday.tipo);
@@ -20,35 +20,64 @@ const isProperHoliday = (holiday) => {
 };
 
 const toStringItem = (holiday) => {
-  const date = parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today());
-  const diff = differenceInDays(date, today());
-  return `- *${format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
+  const date = fns.parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today());
+  const diff = fns.differenceInDays(date, today());
+  return `- *${fns.format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
 };
 
 const toStringItemCA = (holiday) => {
   const date = new Date(holiday.date);
-  const diff = differenceInDays(date, today());
-  return `- *${format(date, 'dd MMM')}* ${holiday.nameFr} (${diff}d)`;
+  const diff = fns.differenceInDays(date, today());
+  return `- *${fns.format(date, 'dd MMM')}* ${holiday.nameFr} (${diff}d)`;
 };
+
+const fetchHolidaysAR = async (year) => {
+  const { data } = await axios.get(apis.holidays.replace('{year}', year));
+  return data
+    .filter(isAfterToday)
+    .filter(isProperHoliday)
+    .map(holiday => ({ ...holiday, date: new Date(year, holiday.mes - 1, holiday.dia) }));
+};
+
+function isWorkday(date, holidays) {
+  return fns.isWeekend(date) || holidays.some(holiday => holiday.date === date);
+}
+
+/**
+ * Find Next Long Weekend
+ * Recursive function over holidays array
+ */
+function findNextLongWeekend(holidays) {
+  if (holidays.length === 0) return null;
+  const [nextHoliday, ...restHolidays] = holidays;
+
+  const groupDays = [nextHoliday.date];
+  let prevDate = fns.subDays(nextHoliday.date, 1);
+  while (!isWorkday(prevDate, holidays)) {
+    groupDays.unshift(prevDate);
+    prevDate = fns.subDays(prevDate, 1);
+  }
+
+  let nextDate = fns.addDays(nextHoliday.date, 1);
+  while (!isWorkday(nextDate, holidays)) {
+    groupDays.push(nextDate);
+    nextDate = fns.addDays(nextDate, 1);
+  }
+
+  return groupDays.length > 3
+    ? { start: groupDays[0], end: groupDays[groupDays.length - 1] }
+    : findNextLongWeekend(restHolidays);
+}
 
 // ----- ----- Exported Functions ----- -----
 
 /**
- * Example
- *
- * "motivo": "Año Nuevo",
- * "tipo": "inamovible",
- * "info": "https://es.wikipedia.org/wiki/A%C3%B1o_Nuevo",
- * "dia": 1,
- * "mes": 1,
- * "id": "año-nuevo"
+ * Holidays AR
  */
 const holidaysAR = async (ctx) => {
-  const thisYear = today().getFullYear();
-  const nextYear = thisYear + 1;
   const [resThisYear, resNextYear] = await Promise.all([
-    axios.get(apis.holidays.replace('{year}', thisYear)),
-    axios.get(apis.holidays.replace('{year}', nextYear)),
+    axios.get(apis.holidays.replace('{year}', currentYear())),
+    axios.get(apis.holidays.replace('{year}', nextYear())),
   ]);
 
   const data = [...resThisYear.data, ...resNextYear.data];
@@ -62,21 +91,29 @@ const holidaysAR = async (ctx) => {
 };
 
 /**
- * Example
- *
- * "nameEn": "New Year's Day",
- * "nameFr": "Jour de l'An",
- * "date": "2021-01-01",
- * "federal": 1,
- * "observedDate": "2021-01-01",
- * "id": 1
+ * Next Long Weekend AR
+ */
+const nextLongWeekendAR = async (ctx) => {
+  const holidays = (await Promise.all([
+    fetchHolidaysAR(currentYear()),
+    fetchHolidaysAR(nextYear()),
+  ])).flat();
+
+  const longWeekendFound = findNextLongWeekend(holidays);
+
+  const content = longWeekendFound
+    ? `Próximo finde largo: *${fns.format(longWeekendFound.start, 'dd MMM')}-${fns.format(longWeekendFound.end, 'dd MMM')}*`
+    : 'No encontré ningún finde largo 🪦';
+  ctx.replyWithMarkdown(content);
+};
+
+/**
+ * Holidays CA
  */
 const holidaysCA = async (ctx) => {
-  const thisYear = today().getFullYear();
-  const nextYear = thisYear + 1;
   const [resThisYear, resNextYear] = await Promise.all([
-    axios.get(apisCA.holidays.replace('{year}', thisYear)),
-    axios.get(apisCA.holidays.replace('{year}', nextYear)),
+    axios.get(apisCA.holidays.replace('{year}', currentYear())),
+    axios.get(apisCA.holidays.replace('{year}', nextYear())),
   ]);
 
   const data = [...resThisYear.data.province.holidays, ...resNextYear.data.province.holidays];
@@ -91,4 +128,5 @@ const holidaysCA = async (ctx) => {
 module.exports = {
   holidaysAR,
   holidaysCA,
+  nextLongWeekendAR,
 };
