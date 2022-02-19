@@ -13,7 +13,7 @@ const mainChannel = process.env.MAIN_CHANNEL;
 
 module.exports = {
   schedule: Job('0 9 * * *', () => { sendRegards(bot); }),
-  holidays: Job('15 9 * * * *', async () => {
+  holidays: Job('15 9 * * *', async () => {
     const longWeekendFound = await findNextLongWeekendAR();
     const diff = startingDate => fns.differenceInDays(startingDate, new Date()) + 1;
     const shouldSend = longWeekendFound && [1, 7, 14].includes(diff(longWeekendFound.start));
