@@ -37,16 +37,21 @@ const toStringItem = (holiday) => {
  * "id": "año-nuevo"
  */
 const holidays = async (ctx) => {
-  const url = apis.holidays.replace('{year}', today().getFullYear());
-  const { data } = await axios.get(url);
+  const thisYear = today().getFullYear();
+  const nextYear = thisYear + 1;
+  const [resThisYear, resNextYear] = await Promise.all([
+    axios.get(apis.holidays.replace('{year}', thisYear)),
+    axios.get(apis.holidays.replace('{year}', nextYear)),
+  ]);
+
+  const data = [...resThisYear.data, ...resNextYear.data];
   const days = data
     .filter(isAfterToday)
     .filter(isProperHoliday)
-    .map(toStringItem);
+    .map(toStringItem)
+    .slice(0, 7);
 
-  const content = `Manga de vagos, *quedan ${days.length} feriados* en todo el año.\n\n${days.join('\n')}`;
-
-  ctx.replyWithMarkdown(content);
+  ctx.replyWithMarkdown(`🇦🇷 Próximos Feriados\n\n${days.join('\n')}`);
 };
 
 module.exports = holidays;

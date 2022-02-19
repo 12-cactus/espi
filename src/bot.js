@@ -29,7 +29,7 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 bot.hears(/^espi +feriados/, holidays);
-bot.hears(/^espi +férié/, holidaysCa);
+bot.hears(/^espi +(férié|ferie)/, holidaysCa);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));
