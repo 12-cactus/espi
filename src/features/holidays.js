@@ -3,11 +3,13 @@ const differenceInDays = require('date-fns/differenceInDays');
 const isAfter = require('date-fns/isAfter');
 const format = require('date-fns/format');
 const parse = require('date-fns/parse');
-const { apis } = require('../config');
+const { apis, apisCA } = require('../config');
 
 const today = () => new Date();
 
 const isAfterToday = holiday => isAfter(parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()), today());
+
+const isAfterTodayCA = holiday => isAfter(new Date(holiday.date), today());
 
 const isProperHoliday = (holiday) => {
   const isNonWorking = ['inamovible', 'puente', 'trasladable'].includes(holiday.tipo);
@@ -20,8 +22,13 @@ const isProperHoliday = (holiday) => {
 const toStringItem = (holiday) => {
   const date = parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today());
   const diff = differenceInDays(date, today());
-
   return `- *${format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
+};
+
+const toStringItemCA = (holiday) => {
+  const date = new Date(holiday.date);
+  const diff = differenceInDays(date, today());
+  return `- *${format(date, 'dd MMM')}* ${holiday.nameFr} (${diff}d)`;
 };
 
 // ----- ----- Exported Functions ----- -----
@@ -36,7 +43,7 @@ const toStringItem = (holiday) => {
  * "mes": 1,
  * "id": "año-nuevo"
  */
-const holidays = async (ctx) => {
+const holidaysAR = async (ctx) => {
   const thisYear = today().getFullYear();
   const nextYear = thisYear + 1;
   const [resThisYear, resNextYear] = await Promise.all([
@@ -54,4 +61,34 @@ const holidays = async (ctx) => {
   ctx.replyWithMarkdown(`🇦🇷 Próximos Feriados\n\n${days.join('\n')}`);
 };
 
-module.exports = holidays;
+/**
+ * Example
+ *
+ * "nameEn": "New Year's Day",
+ * "nameFr": "Jour de l'An",
+ * "date": "2021-01-01",
+ * "federal": 1,
+ * "observedDate": "2021-01-01",
+ * "id": 1
+ */
+const holidaysCA = async (ctx) => {
+  const thisYear = today().getFullYear();
+  const nextYear = thisYear + 1;
+  const [resThisYear, resNextYear] = await Promise.all([
+    axios.get(apisCA.holidays.replace('{year}', thisYear)),
+    axios.get(apisCA.holidays.replace('{year}', nextYear)),
+  ]);
+
+  const data = [...resThisYear.data.province.holidays, ...resNextYear.data.province.holidays];
+  const days = data
+    .filter(isAfterTodayCA)
+    .map(toStringItemCA)
+    .slice(0, 7);
+  const content = `🇨🇦 Prochaines Férié\n\n${days.join('\n')}`;
+  ctx.replyWithMarkdown(content);
+};
+
+module.exports = {
+  holidaysAR,
+  holidaysCA,
+};
