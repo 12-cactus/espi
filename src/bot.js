@@ -30,9 +30,9 @@ bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 
 // Espi commands
-bot.hears(/^espi +feriados/, holidaysAR);
-bot.hears(/^espi +(férié|ferie)/, holidaysCA);
-bot.hears(/^espi +finde +largo/, nextLongWeekendAR);
+bot.hears(/^espi +feriados/i, holidaysAR);
+bot.hears(/^espi +(férié|ferie)/i, holidaysCA);
+bot.hears(/^espi +finde +largo/i, nextLongWeekendAR);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));
