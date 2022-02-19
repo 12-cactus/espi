@@ -39,8 +39,8 @@ const fetchHolidaysAR = async (year) => {
     .map(holiday => ({ ...holiday, date: new Date(year, holiday.mes - 1, holiday.dia) }));
 };
 
-function isWorkday(date, holidays) {
-  return fns.isWeekend(date) || holidays.some(holiday => holiday.date === date);
+function isRestingDay(date, holidays) {
+  return fns.isWeekend(date) || holidays.some(holiday => fns.isSameDay(holiday.date, date));
 }
 
 /**
@@ -53,18 +53,18 @@ function findNextLongWeekendBasedOn(holidays) {
 
   const groupDays = [nextHoliday.date];
   let prevDate = fns.subDays(nextHoliday.date, 1);
-  while (!isWorkday(prevDate, holidays)) {
+  while (isRestingDay(prevDate, holidays)) {
     groupDays.unshift(prevDate);
     prevDate = fns.subDays(prevDate, 1);
   }
 
   let nextDate = fns.addDays(nextHoliday.date, 1);
-  while (!isWorkday(nextDate, holidays)) {
+  while (isRestingDay(nextDate, holidays)) {
     groupDays.push(nextDate);
     nextDate = fns.addDays(nextDate, 1);
   }
 
-  return groupDays.length > 3
+  return groupDays.length > 2
     ? { start: groupDays[0], end: groupDays[groupDays.length - 1] }
     : findNextLongWeekendBasedOn(restHolidays);
 }
