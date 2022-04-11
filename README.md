@@ -7,11 +7,9 @@
 ```sh
 git clone git@github.com:12-cactus/espi.git && cd espi
 npm install
+cp .env.example .env
 ```
-Create .env file with .env.example
-
-With the Telegram's BotFather create `/newbot`
-then copy/paste the token on the .env file
+Create your dev bot using BotFather and the command `/newbot`, then add your bot token to the .env file.
 
 When finish those steps, you have to make a tunnel and then start.
 Console one:
