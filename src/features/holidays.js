@@ -104,9 +104,9 @@ const findNextLongWeekendAR = async () => {
  */
 const nextLongWeekendAR = async (ctx) => {
   const longWeekendFound = await findNextLongWeekendAR();
-
+  const diffDays = fns.differenceInDays(longWeekendFound.start, new Date());
   const content = longWeekendFound
-    ? `Próximo finde largo: *${fns.format(longWeekendFound.start, 'dd MMM')}-${fns.format(longWeekendFound.end, 'dd MMM')}*`
+    ? `Próximo finde largo: *${fns.format(longWeekendFound.start, 'dd MMM')}-${fns.format(longWeekendFound.end, 'dd MMM')} *Faltan: ${diffDays} días`
     : 'No encontré ningún finde largo 🪦';
   ctx.replyWithMarkdown(content);
 };
