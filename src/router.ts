@@ -1,13 +1,15 @@
-const express = require('express');
-const bot = require('./bot');
-const { version } = require('../package.json');
-const { BadRequestResponse } = require('./lib/api-exceptions');
+import express, { NextFunction, Request, Response } from 'express';
+import bot from './bot';
+import { version } from '../package.json';
+import BadRequestResponse from './exceptions/BadRequestResponse';
 
 const router = express.Router();
 
-const handling = callback => async (req, res, next) => {
+type CallbackFn = (req: Request, res: Response, next: express.NextFunction) => ({});
+
+const handling = (callback: CallbackFn) => async (req: Request, res: Response, next: NextFunction) => {
   try {
-    return await callback(req, res, next);
+    return callback(req, res, next);
   } catch (error) {
     return next(error);
   }
@@ -28,4 +30,4 @@ router.get('/sticker/:collection/:emoji', handling(async (req, res) => {
   res.status(200).json({ sticker });
 }));
 
-module.exports = router;
+export default router;

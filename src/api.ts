@@ -1,5 +1,4 @@
-require('dotenv').config();
-const axios = require('axios');
+import axios from 'axios';
 
 const { BOT_DOMAIN } = process.env;
 
@@ -10,4 +9,4 @@ const instance = axios.create({
   },
 });
 
-module.exports = instance;
+export default instance;
