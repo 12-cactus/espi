@@ -1,6 +1,7 @@
-const { format } = require('date-fns');
+import { format } from 'date-fns';
+import { Telegraf } from 'telegraf';
 
-const mainChannel = process.env.MAIN_CHANNEL;
+const MAIN_CHANNEL = process.env.MAIN_CHANNEL || 0;
 
 const birthdayList = [
   { day: '06-01', name: 'Pipi' },
@@ -19,15 +20,14 @@ const birthdayList = [
   { day: '21-11', name: 'Ana' },
 ];
 
-/**
- * @param {Telegraf} bot
- */
-const sendRegards = (bot) => {
+const sendRegards = (bot: Telegraf) => {
   const today = format(new Date(), 'dd-MM');
   const birthdays = birthdayList.filter(b => b.day === today);
   birthdays.forEach((birthday) => {
-    bot.telegram.sendMessage(mainChannel, `Feliz cumple ${birthday.name}`);
+    bot.telegram.sendMessage(MAIN_CHANNEL, `Feliz cumple ${birthday.name}`);
   });
 };
 
-module.exports = sendRegards;
+const Schedule = { sendRegards };
+
+export default Schedule;

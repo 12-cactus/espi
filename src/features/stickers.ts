@@ -1,7 +1,7 @@
-const logger = require('winston-ready');
-const api = require('../api');
+import logger from '../logger';
+import api from '../api';
 
-const find = async (collection, emoji) => {
+const find = async (collection: string, emoji: string) => {
   try {
     const path = encodeURI(`/sticker/${collection}/${emoji}`);
     const { data } = await api.get(path);
@@ -12,9 +12,11 @@ const find = async (collection, emoji) => {
   }
 };
 
-module.exports = {
+const Stickers = {
   find,
   maybeFacu: async () => find('docecactus', '👤'),
   paintedDog: async () => find('docecactus', '🐺'),
   patternMatchingDan: async () => find('docecactus', '🖕'),
 };
+
+export default Stickers;

@@ -1,17 +1,46 @@
-const axios = require('axios').default;
-const fns = require('date-fns');
+import axios from 'axios';
+import * as fns from 'date-fns';
+import { Context } from 'telegraf';
 
-const { apis, apisCA } = require('../config');
+import { apis, apisCA } from '../config';
+
+type HolidayAR = {
+  id: string;
+  dia: number;
+  mes: number;
+  motivo: string;
+  tipo: string;
+  info: string;
+  opcional?: string | null;
+  religion?: string | null;
+  origen?: string | null;
+  original?: string | null;
+};
+
+type ParsedHolidayAR = HolidayAR & { date: Date };
+
+type HolidayCA = {
+  date: string;
+  nameFr: string;
+};
+
+type LongWeekendDate = {
+  start: Date,
+  end: Date
+};
 
 const today = () => new Date();
 const currentYear = () => today().getFullYear();
 const nextYear = () => currentYear() + 1;
 
-const isAfterToday = holiday => fns.isAfter(fns.parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()), today());
+const isAfterToday = (holiday: HolidayAR) => fns.isAfter(
+  fns.parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today()),
+  today(),
+);
 
-const isAfterTodayCA = holiday => fns.isAfter(new Date(holiday.date), today());
+const isAfterTodayCA = (holiday: HolidayCA) => fns.isAfter(new Date(holiday.date), today());
 
-const isProperHoliday = (holiday) => {
+const isProperHoliday = (holiday: HolidayAR) => {
   const isNonWorking = ['inamovible', 'puente', 'trasladable'].includes(holiday.tipo);
   const isCristian = holiday.tipo === 'nolaborable'
                   && holiday.opcional === 'religion'
@@ -19,27 +48,27 @@ const isProperHoliday = (holiday) => {
   return isNonWorking || isCristian;
 };
 
-const toStringItem = (holiday) => {
+const toStringItem = (holiday: HolidayAR) => {
   const date = fns.parse(`${holiday.mes}-${holiday.dia}`, 'M-d', today());
   const diff = fns.differenceInDays(date, today());
   return `- *${fns.format(date, 'dd MMM')}* ${holiday.motivo} (${diff}d)`;
 };
 
-const toStringItemCA = (holiday) => {
+const toStringItemCA = (holiday: HolidayCA) => {
   const date = new Date(holiday.date);
   const diff = fns.differenceInDays(date, today());
   return `- *${fns.format(date, 'dd MMM')}* ${holiday.nameFr} (${diff}d)`;
 };
 
-const fetchHolidaysAR = async (year) => {
-  const { data } = await axios.get(apis.holidays.replace('{year}', year));
+const fetchHolidaysAR = async (year: number) => {
+  const { data } = await axios.get(apis.holidays.replace('{year}', `${year}`));
   return data
     .filter(isAfterToday)
     .filter(isProperHoliday)
-    .map(holiday => ({ ...holiday, date: new Date(year, holiday.mes - 1, holiday.dia) }));
+    .map((holiday: HolidayAR) => ({ ...holiday, date: new Date(year, holiday.mes - 1, holiday.dia) }));
 };
 
-function isRestingDay(date, holidays) {
+function isRestingDay(date: Date, holidays: ParsedHolidayAR[]) {
   return fns.isWeekend(date) || holidays.some(holiday => fns.isSameDay(holiday.date, date));
 }
 
@@ -47,8 +76,8 @@ function isRestingDay(date, holidays) {
  * Find Next Long Weekend
  * Recursive function over holidays array
  */
-function findNextLongWeekendBasedOn(holidays) {
-  if (holidays.length === 0) return null;
+function findNextLongWeekendBasedOn(holidays: ParsedHolidayAR[]): LongWeekendDate {
+  if (holidays.length === 0) return { start: new Date(), end: new Date() };
   const [nextHoliday, ...restHolidays] = holidays;
 
   const groupDays = [nextHoliday.date];
@@ -64,9 +93,11 @@ function findNextLongWeekendBasedOn(holidays) {
     nextDate = fns.addDays(nextDate, 1);
   }
 
-  return groupDays.length > 2
+  const result: LongWeekendDate = groupDays.length > 2
     ? { start: groupDays[0], end: groupDays[groupDays.length - 1] }
     : findNextLongWeekendBasedOn(restHolidays);
+
+  return result;
 }
 
 // ----- ----- Exported Functions ----- -----
@@ -74,10 +105,10 @@ function findNextLongWeekendBasedOn(holidays) {
 /**
  * Holidays AR
  */
-const holidaysAR = async (ctx) => {
+const holidaysAR = async (ctx: Context) => {
   const [resThisYear, resNextYear] = await Promise.all([
-    axios.get(apis.holidays.replace('{year}', currentYear())),
-    axios.get(apis.holidays.replace('{year}', nextYear())),
+    axios.get(apis.holidays.replace('{year}', `${currentYear()}`)),
+    axios.get(apis.holidays.replace('{year}', `${nextYear()}`)),
   ]);
 
   const data = [...resThisYear.data, ...resNextYear.data];
@@ -102,11 +133,12 @@ const findNextLongWeekendAR = async () => {
 /**
  * Next Long Weekend AR
  */
-const nextLongWeekendAR = async (ctx) => {
-  const longWeekendFound = await findNextLongWeekendAR();
-  const diffDays = fns.differenceInDays(longWeekendFound.start, new Date());
-  const content = longWeekendFound
-    ? `Próximo finde largo: *${fns.format(longWeekendFound.start, 'dd MMM')}-${fns.format(longWeekendFound.end, 'dd MMM')} *Faltan: ${diffDays} días`
+const nextLongWeekendAR = async (ctx: Context) => {
+  const longWeekend = await findNextLongWeekendAR();
+  const diffDays = fns.differenceInDays(longWeekend.start, new Date());
+  const format = (date: Date) => fns.format(date, 'dd MMM');
+  const content = longWeekend
+    ? `Próximo finde largo: *${format(longWeekend.start)}-${format(longWeekend.end)} *Faltan: ${diffDays} días`
     : 'No encontré ningún finde largo 🪦';
   ctx.replyWithMarkdown(content);
 };
@@ -114,10 +146,10 @@ const nextLongWeekendAR = async (ctx) => {
 /**
  * Holidays CA
  */
-const holidaysCA = async (ctx) => {
+const holidaysCA = async (ctx: Context) => {
   const [resThisYear, resNextYear] = await Promise.all([
-    axios.get(apisCA.holidays.replace('{year}', currentYear())),
-    axios.get(apisCA.holidays.replace('{year}', nextYear())),
+    axios.get(apisCA.holidays.replace('{year}', `${currentYear()}`)),
+    axios.get(apisCA.holidays.replace('{year}', `${nextYear()}`)),
   ]);
 
   const data = [...resThisYear.data.province.holidays, ...resNextYear.data.province.holidays];
@@ -129,9 +161,11 @@ const holidaysCA = async (ctx) => {
   ctx.replyWithMarkdown(content);
 };
 
-module.exports = {
+const Holidays = {
   holidaysAR,
   holidaysCA,
   nextLongWeekendAR,
   findNextLongWeekendAR,
 };
+
+export default Holidays;
