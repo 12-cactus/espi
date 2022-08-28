@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import fns from 'date-fns';
+import * as fns from 'date-fns';
 import bot from './bot';
 import Holidays from './features/holidays';
 import Schedule from './features/schedule';

@@ -41,8 +41,8 @@ bot.hears(/pinto +\w+ +perro/i, async ctx => ctx.replyWithSticker(await stickers
 bot.hears(/pattern +matching/i, async ctx => ctx.replyWithSticker(await stickers.patternMatchingDan()));
 
 // Let me google that
-// const searchLink = (query: string) => encodeURI(`https://www.google.com/search?q=${query}`);
-// bot.hears(/^(g|google)\s+(?<q>.+)/i, async ctx => ctx.reply(searchLink(ctx.match?.groups?.q || '')));
+const searchLink = (query: string) => encodeURI(`https://www.google.com/search?q=${query}`);
+bot.hears(/^(g|gg|google)\s+(?<q>.+)/i, async ctx => ctx.reply(searchLink(ctx.match?.groups?.q || '')));
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));

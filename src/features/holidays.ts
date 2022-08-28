@@ -1,5 +1,5 @@
 import axios from 'axios';
-import fns from 'date-fns';
+import * as fns from 'date-fns';
 import { Context } from 'telegraf';
 
 import { apis, apisCA } from '../config';
