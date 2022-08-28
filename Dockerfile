@@ -4,7 +4,7 @@ ENV NODE_ENV=production
 
 WORKDIR /opt/app
 
-COPY index.js package.json package-lock.json /opt/app/
+COPY package.json package-lock.json /opt/app/
 COPY locales/ /opt/app/locales/
 COPY src/ /opt/app/src/
 
