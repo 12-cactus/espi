@@ -1,5 +1,5 @@
-import logger from '../logger';
-import api from '../api';
+import logger from '../lib/logger';
+import api from '../lib/api';
 
 const find = async (collection: string, emoji: string) => {
   try {

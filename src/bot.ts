@@ -2,7 +2,7 @@ import { Telegraf } from 'telegraf';
 
 import Holidays from './features/holidays';
 import stickers from './features/stickers';
-import logger from './logger';
+import logger from './lib/logger';
 
 const y18n = require('y18n');
 
