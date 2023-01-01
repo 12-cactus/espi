@@ -8,7 +8,7 @@ dayjs.extend(weekday);
 export type InfoDay = {
   name: string;
   date: Dayjs,
-  type: string,
+  type: DayType,
   isRestingDay: boolean
 };
 
@@ -50,8 +50,6 @@ function* daysIterator(from: Dayjs, to: Dayjs) {
   }
 }
 
-const isHoliday = (date: Dayjs, holidays: InfoDay[]) => holidays.some(holiday => date.isSame(holiday.date, 'day'));
-
 function parseHolidayType(date: Dayjs, holidays: InfoDay[]): DayType {
   const holiday = holidays.find(h => date.isSame(h.date, 'day'));
   return holiday?.type as DayType ?? 'unknown';
@@ -61,10 +59,10 @@ function parseWeekdayType(date: Dayjs) {
   return [0, 6].includes(date.day()) ? 'weekend' : 'working-day';
 }
 
-function toTypedDay(date: Dayjs, holidays: InfoDay[]): InfoDay {
-  const holiday = isHoliday(date, holidays);
-  const name = holiday ? 'holiday' : date.format('dddd');
-  const type: DayType = holiday
+function toInfoDay(date: Dayjs, holidays: InfoDay[]): InfoDay {
+  const infoDay = holidays.find(holiday => date.isSame(holiday.date, 'day'));
+  const name = infoDay ? infoDay.name : date.format('dddd');
+  const type: DayType = infoDay
     ? parseHolidayType(date, holidays)
     : parseWeekdayType(date);
   const isRestingDay = ['touristic-bridge', 'national-holiday', 'weekend'].includes(type);
@@ -79,7 +77,7 @@ function toTypedDay(date: Dayjs, holidays: InfoDay[]): InfoDay {
 
 function toRestingDay(typed: InfoDay): InfoDay {
   return {
-    name: 'asd',
+    name: typed.name,
     date: typed.date,
     type: typed.type,
     isRestingDay: true,
@@ -157,7 +155,7 @@ export const longWeekendMap = (holidays: InfoDay[]): LongWeekend[] => {
 
   // input: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
   const restingDays = [...daysIterator(from, to)]
-    .map(day => toTypedDay(day, holidays))
+    .map(day => toInfoDay(day, holidays))
     .filter(typedDay => typedDay.isRestingDay);
   // output: [3,4,5,12,13,14,15]
 
