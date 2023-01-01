@@ -2,7 +2,7 @@
 FROM node:16-alpine as builder
 WORKDIR /app
 
-COPY package.json package-lock.json /app/
+COPY package.json yarn.lock /app/
 COPY tsconfig.json /app/
 COPY locales/ /app/locales/
 COPY src/ /app/src/
@@ -15,7 +15,7 @@ FROM node:16-alpine as prod
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY package.json package-lock.json /app/
+COPY package.json yarn.lock /app/
 RUN yarn install --frozen-lockfile
 COPY --from=builder /app/dist/ /app/dist/
 
