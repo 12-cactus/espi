@@ -6,7 +6,7 @@ import {
 // ----------------------------------------------------------------------------------
 
 const InfoDayBuilder = (options: any): InfoDay => ({
-  name: 'none',
+  name: options.name || 'none',
   date: dayjs(options.date || '2022-01-01'),
   type: options.type || 'unknown',
   isRestingDay: options.isRestingDay || false,
@@ -45,7 +45,7 @@ describe('Testing module long-weekend', () => {
       expect(longWeekends).toBeInstanceOf(Array);
       expect(longWeekends.length).toBe(1);
       expect(longWeekends[0].days.length).toBe(3);
-      expect(longWeekends[0].name).toBe('holiday');
+      expect(longWeekends[0].name).toBe('Testing Holiday');
       expect(longWeekends[0].start.format('YYYY-MM-DD')).toBe('2022-10-08');
       expect(longWeekends[0].end.format('YYYY-MM-DD')).toBe('2022-10-10');
     });
@@ -57,7 +57,7 @@ describe('Testing module long-weekend', () => {
       expect(longWeekends).toBeInstanceOf(Array);
       expect(longWeekends.length).toBe(1);
       expect(longWeekends[0].days.length).toBe(3);
-      expect(longWeekends[0].name).toBe('holiday');
+      expect(longWeekends[0].name).toBe('Testing Holiday');
       expect(longWeekends[0].start.format('YYYY-MM-DD')).toBe('2022-10-07');
       expect(longWeekends[0].end.format('YYYY-MM-DD')).toBe('2022-10-09');
     });
