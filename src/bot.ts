@@ -33,7 +33,8 @@ bot.hears('hi', ctx => ctx.reply(__`hi`));
 // Espi commands
 bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
-bot.hears(/^espi +finde +largo/i, Holidays.nextLongWeekendAR);
+bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
+bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));

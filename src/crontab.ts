@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import * as fns from 'date-fns';
+import dayjs, { Dayjs } from 'dayjs';
 import bot from './bot';
 import Holidays from './features/holidays';
 import Schedule from './features/schedule';
@@ -16,12 +16,16 @@ const crontab = {
   }),
 
   holidays: Job('15 9 * * *', async () => {
-    const longWeekend = await Holidays.findNextLongWeekendAR();
-    const diff = (startingDate: Date) => fns.differenceInDays(startingDate, new Date()) + 1;
-    const shouldSend = longWeekend && [1, 7, 14].includes(diff(longWeekend.start));
-    const format = (date: Date) => fns.format(date, 'dd MMM');
+    const nextLongWeekends = await Holidays.findNextLongWeekendsAR();
+    if (nextLongWeekends.length === 0) return;
+
+    const longWeekend = nextLongWeekends[0];
+    const daysLeft = longWeekend.start.diff(dayjs(), 'day');
+    const shouldSend = [1, 8, 15].includes(daysLeft);
     if (shouldSend) {
-      const content = `Próximo finde largo: *${format(longWeekend.start)}-${format(longWeekend.end)}*`;
+      const format = (date: Dayjs) => date.format('ddd DD/MMM');
+      const range = `${format(longWeekend.start)} -- ${format(longWeekend.end)}`;
+      const content = `_Próximo finde largo_\n\n📌 *${longWeekend.name}*\n📆 ${range}\n⏳ faltan ${daysLeft} días`;
       await bot.telegram.sendMessage(mainChannel, content, { parse_mode: 'Markdown' });
     }
   }),

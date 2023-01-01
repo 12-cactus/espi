@@ -128,6 +128,23 @@ const nextLongWeekendAR = async (ctx: Context) => {
 };
 
 /**
+ * Next Three Long Weekends AR
+ */
+const nextThreeLongWeekendsAR = async (ctx: Context) => {
+  const nextLongWeekends = await findNextLongWeekendsAR();
+  const longWeekends = nextLongWeekends.slice(0, 3);
+  const formatLongWeekend = (lw: LongWeekend) => {
+    const daysLeft = (day: Dayjs) => day.diff(dayjs(), 'day');
+    const range = `${lw.start.format('DD MMM')}-${lw.end.format('DD MMM')}`;
+    return ` - *${range}* ${lw.name} (${daysLeft(lw.start)}d)`;
+  };
+  const content = longWeekends.length > 0
+    ? `🏝 _Próximos 3 findes largos_\n\n${longWeekends.map(lw => formatLongWeekend(lw)).join('\n')}`
+    : 'No encontré ningún finde largo 🪦';
+  ctx.replyWithMarkdownV2(markdownEscape(content));
+};
+
+/**
  * Holidays CA
  */
 const holidaysCA = async (ctx: Context) => {
@@ -149,6 +166,7 @@ const Holidays = {
   holidaysAR,
   holidaysCA,
   nextLongWeekendAR,
+  nextThreeLongWeekendsAR,
   findNextLongWeekendsAR,
 };
 
