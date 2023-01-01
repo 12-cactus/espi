@@ -4,7 +4,7 @@ import { Context } from 'telegraf';
 
 import { apis, apisCA } from '../config';
 
-type HolidayAR = {
+export type HolidayAR = {
   id: string;
   dia: number;
   mes: number;
@@ -19,7 +19,7 @@ type HolidayAR = {
 
 type ParsedHolidayAR = HolidayAR & { date: Date };
 
-type HolidayCA = {
+export type HolidayCA = {
   date: string;
   nameFr: string;
 };
