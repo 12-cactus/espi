@@ -4,16 +4,16 @@ import dotenv from 'dotenv';
 // Dotenv configuration should be called before import any internal module
 dotenv.config();
 
-import app from './server';
+import app from './app';
 import crontab from './crontab';
-import logger from './logger';
+import logger from './lib/logger';
 
 const { EXPRESS_PORT = 3000 } = process.env;
 
 // Start
 app.listen(EXPRESS_PORT, () => {
-  logger.info(`Running on ${EXPRESS_PORT}`);
-
   // start cron jobs
   crontab.schedule.start();
+  logger.info('✔ Crontab started');
+  logger.info(`✔ Running on ${EXPRESS_PORT}`);
 });

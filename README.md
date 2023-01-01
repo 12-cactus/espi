@@ -6,7 +6,7 @@
 
 ```sh
 git clone git@github.com:12-cactus/espi.git && cd espi
-npm install
+yarn install
 cp .env.example .env
 ```
 
@@ -16,13 +16,13 @@ When finish those steps, you have to make a tunnel and then start.
 Console one:
 
 ```sh
-npm run tunnel
+yarn tunnel
 ```
 
 Console two:
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 Finish, `/start` your bot on Telegram and enjoy to code...

@@ -5,16 +5,15 @@ module.exports = {
     'airbnb-typescript/base',
   ],
   env: {
-    browser: true,
+    node: true,
     es2021: true,
+    browser: true,
   },
   parserOptions: {
     project: './tsconfig.json',
     sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['import'],
   rules: {
     'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
     'max-len': ['error', { code: 120 }],

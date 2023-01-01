@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
-import logger from './logger';
+import logger from './lib/logger';
 import ApiError from './exceptions/ApiError';
 
 import webhook from './webhook';
@@ -8,8 +8,8 @@ import router from './router';
 
 // Config Express
 const app = express();
-app.use(morgan('combined', { stream: { write: message => logger.info(message) } }));
 
+app.use(morgan('combined', { stream: { write: message => logger.info(message) } }));
 app.use(webhook); // Telegram Webhook
 app.use(router); // Espi API
 
@@ -24,16 +24,13 @@ app.use((req, res, next) => {
 // Must be the last middleware to work properly
 app.use((error: Error | ApiError, req: Request, res: Response) => {
   const status = error instanceof ApiError ? error.status : 500;
-  const message = error.message || 'Ups, something is wrong...';
+  const message = error.message || 'Ups, something went wrong...';
+  const errors = (error instanceof ApiError && error.errors.length > 0) ? error.errors : undefined;
+
   if (status >= 500) logger.error(error);
-
-  const response = {
-    status,
-    message,
-    errors: (error instanceof ApiError && error.errors.length > 0) ? error.errors : undefined,
-  };
-
-  return res.status(status).json(response);
+  return res
+    .status(status)
+    .json({ status, message, errors });
 });
 
 export default app;

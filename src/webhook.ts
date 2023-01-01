@@ -1,5 +1,5 @@
 import bot from './bot';
-import logger from './logger';
+import logger from './lib/logger';
 
 const { BOT_DOMAIN } = process.env;
 
@@ -9,9 +9,10 @@ if (!BOT_DOMAIN) {
   process.exit(1);
 }
 
-const path = Math.random().toString(36).substr(2, 10);
-bot.telegram.setWebhook(`${BOT_DOMAIN}/${path}`);
+const randomPath = Math.random().toString(32).substring(2);
 
-const webhook = bot.webhookCallback(`/${path}`);
+bot.telegram.setWebhook(`${BOT_DOMAIN}/${randomPath}`);
+
+const webhook = bot.webhookCallback(`/${randomPath}`);
 
 export default webhook;
