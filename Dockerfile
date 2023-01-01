@@ -7,8 +7,8 @@ COPY tsconfig.json /app/
 COPY locales/ /app/locales/
 COPY src/ /app/src/
 
-RUN npm ci
-RUN npm run build
+RUN yarn install --frozen-lockfile
+RUN yarn build
 
 # Preparing stage
 FROM node:16-alpine as prod
@@ -16,7 +16,7 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 COPY package.json package-lock.json /app/
-RUN npm ci
+RUN yarn install --frozen-lockfile
 COPY --from=builder /app/dist/ /app/dist/
 
 # Deployed stage
@@ -28,4 +28,4 @@ WORKDIR /app
 
 COPY --from=prod /app/ /app/
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]

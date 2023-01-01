@@ -65,7 +65,7 @@
   "release-it": {
     "hooks": {
       "before:init": [
-        "npm run lint"
+        "yarn lint"
       ]
     },
     "git": {
