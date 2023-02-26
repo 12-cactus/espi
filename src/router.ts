@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import bot from './bot';
 import { version } from '../package.json';
 import BadRequestResponse from './exceptions/BadRequestResponse';
+import Holidays from './features/holidays';
 
 const router = express.Router();
 
@@ -28,6 +29,11 @@ router.get('/sticker/:collection/:emoji', handling(async (req, res) => {
   if (!sticker) throw new BadRequestResponse(`Sticker ${emoji} not found in ${collection}`);
 
   res.status(200).json({ sticker });
+}));
+
+router.get('/long-weekend/', handling(async (req, res) => {
+  const longWeekends = await Holidays.findNextLongWeekendsAR();
+  res.status(200).json(longWeekends);
 }));
 
 export default router;
