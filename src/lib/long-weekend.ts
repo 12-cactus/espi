@@ -29,7 +29,7 @@ type ConfigType = {
 
 // -------------------------------------------------------------------------
 
-const { LONG_WEEKEND_MIN_DAYS = 3 } = process.env;
+const LONG_WEEKEND_MIN_DAYS = Number.parseInt(process.env.LONG_WEEKEND_MIN_DAYS || '3', 10);
 
 export default class LongWeekendScanner {
   readonly from: Dayjs;
