@@ -1,4 +1,7 @@
 import { Telegraf } from 'telegraf';
+import { Update } from 'telegraf/typings/core/types/typegram';
+import { mainChannel } from './config';
+import AI from './features/AI';
 
 import Holidays from './features/holidays';
 import stickers from './features/stickers';
@@ -35,6 +38,19 @@ bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
+bot.hears((value, ctx) => {
+  const update = ctx.update as Update.MessageUpdate;
+  if (update.message.chat.id !== mainChannel) return null;
+  return /^espi +(?<question>.+)/i.exec(value);
+}, async (ctx) => {
+  const question = (ctx.match?.groups?.question || '').trim();
+  if (question.length < 7) {
+    ctx.reply('Muy cortito amigo');
+    return;
+  }
+  const answer = await AI.ask(question);
+  ctx.reply(answer);
+});
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));
