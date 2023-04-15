@@ -10,12 +10,20 @@ type ShouldRespondContext = NarrowedContext<Context<Update> & {
   update_id: number;
 }>;
 
+const validChannel = (channelId: number) => config.aiChannels.includes(channelId);
+
+/**
+ * Check is should respond to a incoming message
+ */
 const shouldRespond = (value: string, ctx: Context<Update>) => {
   const update = ctx.update as Update.MessageUpdate;
-  if (update.message.chat.id !== config.mainChannel) return null;
+  if (!validChannel(update.message.chat.id)) return null;
   return /^espi +(?<question>.+)/i.exec(value);
 };
 
+/**
+ * Handle incoming question asking to ChatGPT API
+ */
 const handleQuestion = async (ctx: ShouldRespondContext) => {
   const question = (ctx.match?.groups?.question || '').trim();
   if (question.length < 7) {
