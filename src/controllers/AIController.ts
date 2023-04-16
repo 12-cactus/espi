@@ -1,5 +1,6 @@
 import { Context, NarrowedContext } from 'telegraf';
 import { Update, Message } from 'telegraf/typings/core/types/typegram';
+import { ChatCompletionRequestMessage } from 'openai';
 import AI from '../features/AI';
 import config from '../config';
 
@@ -30,7 +31,14 @@ const handleQuestion = async (ctx: ShouldRespondContext) => {
     ctx.reply('Muy cortito amigo');
     return;
   }
-  const answer = await AI.ask(question);
+
+  const reply = ctx.message.reply_to_message as Message.TextMessage;
+  const contextText = reply?.text || '';
+  const contextRole = reply?.from?.id === config.espiId ? 'system' : 'user';
+  const context: ChatCompletionRequestMessage | undefined = contextText
+    ? { role: contextRole, content: contextText }
+    : undefined;
+  const answer = await AI.ask(question, context);
   ctx.reply(answer);
 };
 
