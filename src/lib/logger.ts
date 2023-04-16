@@ -2,13 +2,14 @@ import winston, { transport } from 'winston';
 
 const transports: transport[] = [];
 
-const devEnvConsoleFormat = () => winston.format.combine(
-  winston.format.colorize(),
-  winston.format.printf((info) => {
-    const { level, message } = info;
-    return `${level}: ${message}`;
-  }),
-);
+const devEnvConsoleFormat = () =>
+  winston.format.combine(
+    winston.format.colorize(),
+    winston.format.printf(info => {
+      const { level, message } = info;
+      return `${level}: ${message}`;
+    })
+  );
 
 const consoleTransport = new winston.transports.Console({
   level: process.env.LOG_CONSOLE_LEVEL || process.env.LOG_LEVEL || 'debug',

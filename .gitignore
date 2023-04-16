@@ -41,6 +41,6 @@ node_modules/
 .parcel-cache
 
 # VSCode
-.vscode
-.vscode-test
-
+.vscode/*
+.vscode-test/*
+!.vscode/settings.json

@@ -3,6 +3,10 @@ module.exports = {
   extends: [
     'airbnb-base',
     'airbnb-typescript/base',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'prettier',
   ],
   env: {
     node: true,
@@ -13,10 +17,32 @@ module.exports = {
     project: './tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['import'],
+  plugins: ['@typescript-eslint', 'import'],
+  settings: {},
   rules: {
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
-    'max-len': ['error', { code: 120 }],
-    '@typescript-eslint/lines-between-class-members': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+    'sort-imports': [
+      'error',
+      {
+        ignoreCase: false,
+        ignoreDeclarationSort: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+        allowSeparatedGroups: true,
+      },
+    ],
+    'import/no-unresolved': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', ['sibling', 'parent'], 'index', 'unknown'],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
 };

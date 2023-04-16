@@ -23,7 +23,7 @@ const birthdayList = [
 const sendRegards = (bot: Telegraf) => {
   const today = format(new Date(), 'dd-MM');
   const birthdays = birthdayList.filter(b => b.day === today);
-  birthdays.forEach((birthday) => {
+  birthdays.forEach(birthday => {
     bot.telegram.sendMessage(MAIN_CHANNEL, `Feliz cumple ${birthday.name}`);
   });
 };

@@ -1,7 +1,8 @@
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from 'openai';
-import config from '../config';
 
-const configuration = new Configuration({ apiKey: config.openAI.apiKey });
+import { openAI } from '../config';
+
+const configuration = new Configuration({ apiKey: openAI.apiKey });
 const openai = new OpenAIApi(configuration);
 
 const ask = async (question: string, context?: ChatCompletionRequestMessage) => {
@@ -12,7 +13,7 @@ const ask = async (question: string, context?: ChatCompletionRequestMessage) => 
   messages.push({ role: 'user', content: question });
 
   const response = await openai.createChatCompletion({
-    ...config.openAI.defaultOptions,
+    ...openAI.defaultOptions,
     messages,
   });
 

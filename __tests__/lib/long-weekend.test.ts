@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
-import {
-  groupByCloseness, longWeekendMap, InfoDay,
-} from '../../src/lib/long-weekend';
+
+import { InfoDay, groupByCloseness, longWeekendMap } from '../../src/lib/long-weekend';
 
 // ----------------------------------------------------------------------------------
 
@@ -12,12 +11,13 @@ const InfoDayBuilder = (options: any): InfoDay => ({
   isRestingDay: options.isRestingDay || false,
 });
 
-const HolidayBuilder = (options: any) => InfoDayBuilder({
-  name: 'Testing Holiday',
-  date: dayjs(options.date || '2022-01-01'),
-  type: 'national-holiday',
-  isRestingDay: true,
-});
+const HolidayBuilder = (options: any) =>
+  InfoDayBuilder({
+    name: 'Testing Holiday',
+    date: dayjs(options.date || '2022-01-01'),
+    type: 'national-holiday',
+    isRestingDay: true,
+  });
 
 // ----------------------------------------------------------------------------------
 

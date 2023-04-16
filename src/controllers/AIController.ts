@@ -1,17 +1,21 @@
-import { Context, NarrowedContext } from 'telegraf';
-import { Update, Message } from 'telegraf/typings/core/types/typegram';
 import { ChatCompletionRequestMessage } from 'openai';
+import { Context, NarrowedContext } from 'telegraf';
+import { Message, Update } from 'telegraf/typings/core/types/typegram';
+
+import { aiChannels, espiId } from '../config';
 import AI from '../features/AI';
-import config from '../config';
 
-type ShouldRespondContext = NarrowedContext<Context<Update> & {
-  match: RegExpExecArray;
-}, {
-  message: Update.New & Update.NonChannel & Message.TextMessage;
-  update_id: number;
-}>;
+type ShouldRespondContext = NarrowedContext<
+  Context<Update> & {
+    match: RegExpExecArray;
+  },
+  {
+    message: Update.New & Update.NonChannel & Message.TextMessage;
+    update_id: number;
+  }
+>;
 
-const validChannel = (channelId: number) => config.aiChannels.includes(channelId);
+const validChannel = (channelId: number) => aiChannels.includes(channelId);
 
 /**
  * Check is should respond to a incoming message
@@ -34,7 +38,7 @@ const handleQuestion = async (ctx: ShouldRespondContext) => {
 
   const reply = ctx.message.reply_to_message as Message.TextMessage;
   const contextText = reply?.text || '';
-  const contextRole = reply?.from?.id === config.espiId ? 'system' : 'user';
+  const contextRole = reply?.from?.id === espiId ? 'system' : 'user';
   const context: ChatCompletionRequestMessage | undefined = contextText
     ? { role: contextRole, content: contextText }
     : undefined;
