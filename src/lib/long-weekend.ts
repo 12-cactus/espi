@@ -1,6 +1,6 @@
+import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/es';
 import weekday from 'dayjs/plugin/weekday';
-import dayjs, { Dayjs } from 'dayjs';
 
 dayjs.locale('es'); // FIXME set this global locale is not the smartest idea, please fix it (:
 dayjs.extend(weekday);

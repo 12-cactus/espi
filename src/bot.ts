@@ -1,10 +1,11 @@
 import { Telegraf } from 'telegraf';
 
+import AIController from './controllers/AIController';
 import Holidays from './features/holidays';
 import stickers from './features/stickers';
 import logger from './lib/logger';
-import AIController from './controllers/AIController';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const y18n = require('y18n');
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

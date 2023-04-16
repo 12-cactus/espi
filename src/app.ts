@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
-import logger from './lib/logger';
-import ApiError from './exceptions/ApiError';
 
-import webhook from './webhook';
+import ApiError from './exceptions/ApiError';
+import logger from './lib/logger';
 import router from './router';
+import webhook from './webhook';
 
 // Config Express
 const app = express();

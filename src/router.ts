@@ -1,12 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
+
 import bot from './bot';
-import { version } from '../package.json';
 import BadRequestResponse from './exceptions/BadRequestResponse';
 import Holidays from './features/holidays';
+import { version } from '../package.json';
 
 const router = express.Router();
 
-type CallbackFn = (req: Request, res: Response, next: express.NextFunction) => {};
+type CallbackFn = (req: Request, res: Response, next: express.NextFunction) => any;
 
 const handling = (callback: CallbackFn) => async (req: Request, res: Response, next: NextFunction) => {
   try {
