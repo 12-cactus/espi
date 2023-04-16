@@ -70,7 +70,7 @@
       ]
     },
     "git": {
-      "commitMessage": ":bookmark: v${version}"
+      "commitMessage": "🔖 v${version}"
     },
     "github": {
       "release": true,
