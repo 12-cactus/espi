@@ -4,12 +4,15 @@ import { ChatCompletionRequestMessage } from 'openai';
 import AI from '../features/AI';
 import config from '../config';
 
-type ShouldRespondContext = NarrowedContext<Context<Update> & {
-  match: RegExpExecArray;
-}, {
-  message: Update.New & Update.NonChannel & Message.TextMessage;
-  update_id: number;
-}>;
+type ShouldRespondContext = NarrowedContext<
+  Context<Update> & {
+    match: RegExpExecArray;
+  },
+  {
+    message: Update.New & Update.NonChannel & Message.TextMessage;
+    update_id: number;
+  }
+>;
 
 const validChannel = (channelId: number) => config.aiChannels.includes(channelId);
 

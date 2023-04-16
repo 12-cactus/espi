@@ -4,9 +4,16 @@ import bot from './bot';
 import Holidays from './features/holidays';
 import Schedule from './features/schedule';
 
-const Job = (cron: string, triggerFn: () => void) => new CronJob(cron, () => {
-  triggerFn();
-}, null, true, 'America/Argentina/Buenos_Aires');
+const Job = (cron: string, triggerFn: () => void) =>
+  new CronJob(
+    cron,
+    () => {
+      triggerFn();
+    },
+    null,
+    true,
+    'America/Argentina/Buenos_Aires'
+  );
 
 const mainChannel = process.env.MAIN_CHANNEL || 0;
 

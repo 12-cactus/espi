@@ -7,9 +7,9 @@ dayjs.extend(weekday);
 
 export type InfoDay = {
   name: string;
-  date: Dayjs,
-  type: DayType,
-  isRestingDay: boolean
+  date: Dayjs;
+  type: DayType;
+  isRestingDay: boolean;
 };
 
 export type DayType = 'working-day' | 'weekend' | 'national-holiday' | 'touristic-bridge' | 'unknown';
@@ -52,7 +52,7 @@ function* daysIterator(from: Dayjs, to: Dayjs) {
 
 function parseHolidayType(date: Dayjs, holidays: InfoDay[]): DayType {
   const holiday = holidays.find(h => date.isSame(h.date, 'day'));
-  return holiday?.type as DayType ?? 'unknown';
+  return (holiday?.type as DayType) ?? 'unknown';
 }
 
 function parseWeekdayType(date: Dayjs) {
@@ -62,9 +62,7 @@ function parseWeekdayType(date: Dayjs) {
 function toInfoDay(date: Dayjs, holidays: InfoDay[]): InfoDay {
   const infoDay = holidays.find(holiday => date.isSame(holiday.date, 'day'));
   const name = infoDay ? infoDay.name : date.format('dddd');
-  const type: DayType = infoDay
-    ? parseHolidayType(date, holidays)
-    : parseWeekdayType(date);
+  const type: DayType = infoDay ? parseHolidayType(date, holidays) : parseWeekdayType(date);
   const isRestingDay = ['touristic-bridge', 'national-holiday', 'weekend'].includes(type);
 
   return {
@@ -112,10 +110,14 @@ export function groupByCloseness(days: InfoDay[] = []): InfoDay[][] {
 
 function restingDayPriority(type: string) {
   switch (type) {
-    case 'national-holiday': return 1;
-    case 'touristic-bridge': return 2;
-    case 'weekend': return 3;
-    default: return 10;
+    case 'national-holiday':
+      return 1;
+    case 'touristic-bridge':
+      return 2;
+    case 'weekend':
+      return 3;
+    default:
+      return 10;
   }
 }
 
@@ -163,8 +165,7 @@ export const longWeekendMap = (holidays: InfoDay[]): LongWeekend[] => {
   const restingDaysInGroups = groupByCloseness(restingDays);
   // output [[3,4,5], [12,13,14,15]]
 
-  const longWeekends = restingDaysInGroups
-    .filter(group => group.length >= LONG_WEEKEND_MIN_DAYS);
+  const longWeekends = restingDaysInGroups.filter(group => group.length >= LONG_WEEKEND_MIN_DAYS);
 
   return longWeekends.map(toLongWeekend);
 };

@@ -25,12 +25,10 @@ app.use((req, res, next) => {
 app.use((error: Error | ApiError, req: Request, res: Response) => {
   const status = error instanceof ApiError ? error.status : 500;
   const message = error.message || 'Ups, something went wrong...';
-  const errors = (error instanceof ApiError && error.errors.length > 0) ? error.errors : undefined;
+  const errors = error instanceof ApiError && error.errors.length > 0 ? error.errors : undefined;
 
   if (status >= 500) logger.error(error);
-  return res
-    .status(status)
-    .json({ status, message, errors });
+  return res.status(status).json({ status, message, errors });
 });
 
 export default app;

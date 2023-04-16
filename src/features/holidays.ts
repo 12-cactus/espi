@@ -5,9 +5,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { Context } from 'telegraf';
 
 import { apis, apisCA } from '../config';
-import {
-  DayType, InfoDay, LongWeekend, longWeekendMap,
-} from '../lib/long-weekend';
+import { DayType, InfoDay, LongWeekend, longWeekendMap } from '../lib/long-weekend';
 
 dayjs.extend(isSameOrAfter);
 
@@ -57,9 +55,7 @@ const toStringItemCA = (holiday: HolidayCA) => {
 
 const isNationalHoliday = (h: HolidayAR) => {
   const isHoliday = ['inamovible', 'trasladable'].includes(h.tipo);
-  const isCristian = h.tipo === 'nolaborable'
-                  && h.opcional === 'religion'
-                  && h.religion === 'cristianismo';
+  const isCristian = h.tipo === 'nolaborable' && h.opcional === 'religion' && h.religion === 'cristianismo';
   return isHoliday || isCristian;
 };
 
@@ -91,8 +87,7 @@ const fetchNextHolidaysAR = async () => {
   const thisYearHolidays: InfoDay[] = thisYearData.data.map((h: HolidayAR) => mapWithYear(h, thisYear));
   const nextYearHolidays: InfoDay[] = nextYearData.data.map((h: HolidayAR) => mapWithYear(h, thisYear + 1));
 
-  return [...thisYearHolidays, ...nextYearHolidays]
-    .filter(t => t.date.isSameOrAfter(dayjs(), 'day') && t.isRestingDay);
+  return [...thisYearHolidays, ...nextYearHolidays].filter(t => t.date.isSameOrAfter(dayjs(), 'day') && t.isRestingDay);
 };
 
 // ----- ----- Exported Functions ----- -----
@@ -138,9 +133,10 @@ const nextThreeLongWeekendsAR = async (ctx: Context) => {
     const range = `${lw.start.format('DD MMM')}-${lw.end.format('DD MMM')}`;
     return ` - *${range}* ${lw.name} (${daysLeft(lw.start)}d)`;
   };
-  const content = longWeekends.length > 0
-    ? `🏝 _Próximos 3 findes largos_\n\n${longWeekends.map(lw => formatLongWeekend(lw)).join('\n')}`
-    : 'No encontré ningún finde largo 🪦';
+  const content =
+    longWeekends.length > 0
+      ? `🏝 _Próximos 3 findes largos_\n\n${longWeekends.map(lw => formatLongWeekend(lw)).join('\n')}`
+      : 'No encontré ningún finde largo 🪦';
   ctx.replyWithMarkdownV2(markdownEscape(content));
 };
 
@@ -154,10 +150,7 @@ const holidaysCA = async (ctx: Context) => {
   ]);
 
   const data = [...resThisYear.data.province.holidays, ...resNextYear.data.province.holidays];
-  const days = data
-    .filter(isAfterTodayCA)
-    .map(toStringItemCA)
-    .slice(0, 7);
+  const days = data.filter(isAfterTodayCA).map(toStringItemCA).slice(0, 7);
   const content = `🇨🇦 Prochaines Férié\n\n${days.join('\n')}`;
   ctx.replyWithMarkdownV2(markdownEscape(content));
 };
