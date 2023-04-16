@@ -1,9 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    'airbnb-base',
-    'airbnb-typescript/base',
-  ],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   env: {
     node: true,
     es2021: true,
@@ -15,8 +12,6 @@ module.exports = {
   },
   plugins: ['import'],
   rules: {
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
-    'max-len': ['error', { code: 120 }],
-    '@typescript-eslint/lines-between-class-members': 'off',
+    '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
   },
 };
