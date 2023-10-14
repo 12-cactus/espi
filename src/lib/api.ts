@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const { BOT_DOMAIN } = process.env;
-
 const instance = axios.create({
-  baseURL: BOT_DOMAIN,
+  baseURL: process.env.API_DOMAIN || process.env.BOT_DOMAIN,
   headers: {
     'Content-type': 'application/json',
   },

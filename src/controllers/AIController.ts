@@ -1,4 +1,4 @@
-import { ChatCompletionRequestMessage } from 'openai';
+import { ChatCompletionMessageParam } from 'openai/resources';
 import { Context, NarrowedContext } from 'telegraf';
 import { Message, Update } from 'telegraf/typings/core/types/typegram';
 
@@ -39,7 +39,7 @@ const handleQuestion = async (ctx: ShouldRespondContext) => {
   const reply = ctx.message.reply_to_message as Message.TextMessage;
   const contextText = reply?.text || '';
   const contextRole = reply?.from?.id === espiId ? 'system' : 'user';
-  const context: ChatCompletionRequestMessage | undefined = contextText
+  const context: ChatCompletionMessageParam | undefined = contextText
     ? { role: contextRole, content: contextText }
     : undefined;
   const answer = await AI.ask(question, context);
