@@ -1,8 +1,8 @@
 import { Telegraf } from 'telegraf';
 
 import AIController from './controllers/AIController';
+import StickersController from './controllers/StickersController';
 import Holidays from './features/holidays';
-import stickers from './features/stickers';
 import logger from './lib/logger';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -40,9 +40,9 @@ bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
 bot.hears(AIController.shouldRespond, AIController.handleQuestion);
 
 // Reply With Stickers
-bot.hears(/\bfacuuu\b/i, async ctx => ctx.replyWithSticker(await stickers.maybeFacu()));
-bot.hears(/pinto +\w+ +perro/i, async ctx => ctx.replyWithSticker(await stickers.paintedDog()));
-bot.hears(/pattern +matching/i, async ctx => ctx.replyWithSticker(await stickers.patternMatchingDan()));
+bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);
+bot.hears(/pinto +\w+ +perro/i, StickersController.replyWithPaintedDog);
+bot.hears(/pattern +matching/i, StickersController.replyWithPatternMatchingDan);
 
 // Let me google that
 const searchLink = (query: string) => encodeURI(`https://www.google.com/search?q=${query}`);

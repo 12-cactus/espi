@@ -5,10 +5,10 @@ const find = async (collection: string, emoji: string) => {
   try {
     const path = encodeURI(`/sticker/${collection}/${emoji}`);
     const { data } = await api.get(path);
-    return data.sticker.file_id;
+    return data.sticker.file_id as string;
   } catch (error) {
     logger.error(error);
-    return null;
+    return Promise.resolve('');
   }
 };
 
