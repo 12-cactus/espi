@@ -32,6 +32,9 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 bot.hears('ping', ctx => ctx.reply('ACK'));
 bot.hears('hi', ctx => ctx.reply(__`hi`));
 
+// Version
+bot.hears(/^espi +version/i, ctx => ctx.reply(`Soy ${ctx.botInfo?.username}@${process.env.npm_package_version}`));
+
 // Espi commands
 bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
