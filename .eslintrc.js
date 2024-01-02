@@ -18,7 +18,13 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'import'],
-  settings: {},
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.d.ts', '.ts', '.tsx'],
+      },
+    },
+  },
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
