@@ -1101,7 +1101,7 @@
   dependencies:
     defer-to-connect "^2.0.1"
 
-"@telegraf/types@^6.9.0":
+"@telegraf/types@^6.9.1":
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/@telegraf/types/-/types-6.9.1.tgz#ee2d335164f582db55337d77cc440c1faeadd510"
   integrity sha512-bzqwhicZq401T0e09tu8b1KvGfJObPmzKU/iKCT5V466AsAZZWQrBYQ5edbmD1VZuHLEwopoOVY5wPP4HaLtug==
@@ -6446,12 +6446,12 @@ tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-telegraf@^4.14.0:
-  version "4.14.0"
-  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-4.14.0.tgz#4cba12ea79e52e6e288e40801d663c9b04319966"
-  integrity sha512-Nn2EBsuar/Mf3SD6O9tHmJ0FyJWnwAi4rewkJMmzd/O1xWYKglEuzSnCuHHRY7oD5NJ6WNPsavta5DbED8tG3w==
+telegraf@^4.15.3:
+  version "4.15.3"
+  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-4.15.3.tgz#72e28e62c3cc7f97b88b5f1b04a0e0700a7df251"
+  integrity sha512-pm2ZQAisd0YlUvnq6xdymDfoQR++8wTalw0nfw7Tjy0va+V/0HaBLzM8kMNid8pbbt7GHTU29lEyA5CAAr8AqA==
   dependencies:
-    "@telegraf/types" "^6.9.0"
+    "@telegraf/types" "^6.9.1"
     abort-controller "^3.0.0"
     debug "^4.3.4"
     mri "^1.2.0"
