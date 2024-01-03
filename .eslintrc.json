@@ -12,18 +12,18 @@
     "es2021": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": "./tsconfig.eslint.json",
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "import"],
   "settings": {
-    "import/extensions": [".js", ".jsx", ".d.ts", ".ts"],
+    "import/extensions": [".js", ".ts"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts"]
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".d.ts", ".ts"],
+        "extensions": [".d.ts", ".ts"],
         "moduleDirectory": ["src", "node_modules"]
       }
     }
