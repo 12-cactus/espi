@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { InfoDay, groupByCloseness, longWeekendMap } from '../../src/lib/long-weekend';
+import { InfoDay, LongWeekend, groupByCloseness, longWeekendMap } from '../../src/lib/long-weekend';
 
 // ----------------------------------------------------------------------------------
 
@@ -18,6 +18,21 @@ const HolidayBuilder = (options: any) =>
     type: 'national-holiday',
     isRestingDay: true,
   });
+
+type LongWeekendExpects = {
+  days: number;
+  from: string;
+  to: string;
+};
+
+const expectToBeALongWeekend = (longWeekends: LongWeekend[], expects: LongWeekendExpects) => {
+  expect(longWeekends).toBeInstanceOf(Array);
+  expect(longWeekends.length).toBe(1);
+  expect(longWeekends[0].days.length).toBe(expects.days);
+  expect(longWeekends[0].name).toBe('Testing Holiday');
+  expect(longWeekends[0].start.format('YYYY-MM-DD')).toBe(expects.from);
+  expect(longWeekends[0].end.format('YYYY-MM-DD')).toBe(expects.to);
+};
 
 // ----------------------------------------------------------------------------------
 
@@ -42,24 +57,22 @@ describe('Testing module long-weekend', () => {
       const mon = HolidayBuilder({ date: '2022-10-10' });
 
       const longWeekends = longWeekendMap([mon]);
-      expect(longWeekends).toBeInstanceOf(Array);
-      expect(longWeekends.length).toBe(1);
-      expect(longWeekends[0].days.length).toBe(3);
-      expect(longWeekends[0].name).toBe('Testing Holiday');
-      expect(longWeekends[0].start.format('YYYY-MM-DD')).toBe('2022-10-08');
-      expect(longWeekends[0].end.format('YYYY-MM-DD')).toBe('2022-10-10');
+      expectToBeALongWeekend(longWeekends, {
+        days: 3,
+        from: '2022-10-08',
+        to: '2022-10-10',
+      });
     });
 
     test('return Long-Weekend when holiday is on Friday', () => {
       const fri = HolidayBuilder({ date: '2022-10-07' });
 
       const longWeekends = longWeekendMap([fri]);
-      expect(longWeekends).toBeInstanceOf(Array);
-      expect(longWeekends.length).toBe(1);
-      expect(longWeekends[0].days.length).toBe(3);
-      expect(longWeekends[0].name).toBe('Testing Holiday');
-      expect(longWeekends[0].start.format('YYYY-MM-DD')).toBe('2022-10-07');
-      expect(longWeekends[0].end.format('YYYY-MM-DD')).toBe('2022-10-09');
+      expectToBeALongWeekend(longWeekends, {
+        days: 3,
+        from: '2022-10-07',
+        to: '2022-10-09',
+      });
     });
   });
 
