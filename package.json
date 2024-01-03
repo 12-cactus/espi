@@ -21,6 +21,7 @@
     "build": "tsc",
     "dev": "sh .scripts/start-dev.sh",
     "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "eslint --ext .js,.ts ./",
     "release": "dotenv release-it",
     "tunnel": "sh .scripts/start-tunnel.sh",
