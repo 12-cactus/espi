@@ -22,7 +22,7 @@
     "dev": "sh .scripts/start-dev.sh",
     "test": "jest",
     "coverage": "jest --coverage",
-    "lint": "eslint --ext .js,.ts ./",
+    "lint": "eslint --ext .ts ./",
     "release": "dotenv release-it",
     "tunnel": "sh .scripts/start-tunnel.sh",
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
