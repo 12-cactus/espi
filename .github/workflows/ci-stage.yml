@@ -36,10 +36,10 @@ jobs:
       - name: Run tests 🧪
         run: yarn test
 
-      - name: Run and push Coverage report 📊
-        uses: paambaati/codeclimate-action@v5.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+      - name: Run coverage 📊
+        run: yarn coverage
+
+      - name: Send Codacy Coverage Report 📈
+        uses: codacy/codacy-coverage-reporter-action@v1
         with:
-          coverageCommand: yarn coverage
-          debug: true
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
