@@ -1,7 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "airbnb-base",
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
@@ -10,8 +9,7 @@
   ],
   "env": {
     "node": true,
-    "es2021": true,
-    "browser": true
+    "es2021": true
   },
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -19,9 +17,14 @@
   },
   "plugins": ["@typescript-eslint", "import"],
   "settings": {
+    "import/extensions": [".js", ".jsx", ".d.ts", ".ts"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts"]
+    },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".d.ts", ".ts", ".tsx"]
+        "extensions": [".js", ".d.ts", ".ts"],
+        "moduleDirectory": ["src", "node_modules"]
       }
     }
   },
@@ -44,7 +47,6 @@
         "allowSeparatedGroups": true
       }
     ],
-    "import/no-unresolved": "error",
     "import/order": [
       "error",
       {
