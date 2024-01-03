@@ -19,11 +19,11 @@
   "settings": {
     "import/extensions": [".js", ".ts"],
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts"]
+      "@typescript-eslint/parser": [".js", ".ts"]
     },
     "import/resolver": {
       "node": {
-        "extensions": [".d.ts", ".ts"],
+        "extensions": [".js", ".d.ts", ".ts"],
         "moduleDirectory": ["src", "node_modules"]
       }
     }
@@ -57,6 +57,7 @@
           "caseInsensitive": true
         }
       }
-    ]
+    ],
+    "import/no-unresolved": ["error", { "commonjs": true }]
   }
 }
