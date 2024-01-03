@@ -68,8 +68,8 @@
     "typescript": "^5.3.3"
   },
   "lint-staged": {
-    "*.{js,ts,json,md}": "prettier --write",
-    "*.{js,ts}": "eslint"
+    "*.{ts,json,md}": "prettier --write",
+    "*.{ts}": "eslint"
   },
   "release-it": {
     "hooks": {
