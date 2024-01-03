@@ -36,7 +36,7 @@ jobs:
       - name: Run tests 🧪
         run: yarn test
 
-      - name: Test & publish code coverage
+      - name: Run and push Coverage report 📊
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
