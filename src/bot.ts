@@ -5,12 +5,6 @@ import StickersController from './controllers/StickersController';
 import Holidays from './features/holidays';
 import logger from './lib/logger';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const y18n = require('y18n');
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const { __ } = y18n({ locale: 'es' });
-
 if (!process.env.BOT_TOKEN) {
   logger.error('You have to define BOT_TOKEN env var');
   // eslint-disable-next-line no-process-exit
@@ -19,23 +13,25 @@ if (!process.env.BOT_TOKEN) {
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Handler for /start command.
+// Handler for /start command
 bot.start(ctx => ctx.reply('Welcome!'));
 
-// Handler for /help command.
+// Handler for /help command
 bot.help(ctx => ctx.reply('Send me a sticker'));
 
-// Registers middleware for provided update type.
-// bot.on('sticker', ctx => ctx.reply('👍'));
-
-// Registers middleware for handling text messages.
+// Basic and Info
 bot.hears('ping', ctx => ctx.reply('ACK'));
-bot.hears('hi', ctx => ctx.reply(__`hi`));
-
-// Version
+bot.hears(/(hi|hola)/, ctx => ctx.reply('👋'));
 bot.hears(/^espi +version/i, ctx => ctx.reply(`Soy ${ctx.botInfo?.username}@${process.env.npm_package_version}`));
+bot.hears(/^espi +id/i, ctx => {
+  const name = ctx.chat.type === 'private' ? `${ctx.chat.first_name} (@${ctx.chat.username})` : ctx.chat.title;
+  ctx.reply(`
+- Nombre: ${name}
+- ID: ${ctx.chat.id} (${ctx.chat.type})
+`);
+});
 
-// Espi commands
+// Espi Featuring
 bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
