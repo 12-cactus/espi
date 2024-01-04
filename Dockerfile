@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package.json yarn.lock /app/
 COPY tsconfig.json /app/
-COPY locales/ /app/locales/
 COPY src/ /app/src/
 
 RUN yarn install --frozen-lockfile

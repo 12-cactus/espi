@@ -13,4 +13,4 @@ echo "API_DOMAIN: $API_DOMAIN"
 echo "BOT_DOMAIN: $BOT_DOMAIN"
 
 # Start the bot
-ts-node src/index.ts
+nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/index.ts
