@@ -1,19 +1,13 @@
 import fs from 'fs';
 
 import { ChatCompletionMessageParam } from 'openai/resources';
-import { Context, NarrowedContext } from 'telegraf';
+import { Context } from 'telegraf';
 import { Message, Update } from 'telegraf/typings/core/types/typegram';
 
+import { TextMatchedContext, TranscriptContext } from './types';
 import { aiChannels, espiId } from '../../config';
 import GPT from '../../core/GPT';
 import api from '../../lib/api';
-
-type TextMatchedContext = NarrowedContext<
-  Context<Update> & { match: RegExpExecArray },
-  Update.MessageUpdate<Message.TextMessage>
->;
-
-type TranscriptContext = NarrowedContext<Context<Update>, Update.MessageUpdate<Message.VoiceMessage>>;
 
 const validChannel = (channelId: number) => aiChannels.includes(channelId);
 

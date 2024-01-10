@@ -1,10 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
 
-// eslint-disable-next-line import/order
-import { version } from '../package.json';
 import bot from './bot';
 import Holidays from './core/holidays';
 import BadRequestResponse from './exceptions/BadRequestResponse';
+import { version } from '../package.json';
 
 const router = express.Router();
 
