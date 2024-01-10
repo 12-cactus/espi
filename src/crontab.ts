@@ -2,8 +2,8 @@ import { CronJob } from 'cron';
 import dayjs, { Dayjs } from 'dayjs';
 
 import bot from './bot';
-import Holidays from './features/holidays';
-import Schedule from './features/schedule';
+import Holidays from './core/holidays';
+import Schedule from './core/schedule';
 
 const Job = (cron: string, triggerFn: () => void) =>
   new CronJob(

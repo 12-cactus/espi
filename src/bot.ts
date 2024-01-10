@@ -1,9 +1,9 @@
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 
-import AIController from './controllers/AIController';
+import GPTController from './controllers/GPT/GPTController';
 import StickersController from './controllers/StickersController';
-import Holidays from './features/holidays';
+import Holidays from './core/holidays';
 import logger from './lib/logger';
 
 if (!process.env.BOT_TOKEN) {
@@ -21,7 +21,7 @@ bot.start(ctx => ctx.reply('Welcome!'));
 bot.help(ctx => ctx.reply('Send me a sticker'));
 
 // Basic and Info
-bot.hears('ping', ctx => ctx.reply('ACK'));
+bot.hears(/^ping$/i, ctx => ctx.reply('ACK'));
 bot.hears(/(hi|hola)/, ctx => ctx.reply('👋'));
 bot.hears(/^espi +version/i, ctx => ctx.reply(`Soy ${ctx.botInfo?.username}@${process.env.npm_package_version}`));
 bot.hears(/^espi +id/i, ctx => {
@@ -37,10 +37,10 @@ bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
-bot.hears(AIController.shouldRespond, ctx => AIController.handleQuestion(ctx));
+bot.hears(GPTController.shouldRespond, ctx => GPTController.handleQuestion(ctx));
 
 // Audio
-bot.on(message('voice'), ctx => AIController.transcriptAudio(ctx));
+bot.on(message('voice'), ctx => GPTController.transcriptAudio(ctx));
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);

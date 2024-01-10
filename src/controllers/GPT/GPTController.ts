@@ -4,9 +4,9 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import { Context, NarrowedContext } from 'telegraf';
 import { Message, Update } from 'telegraf/typings/core/types/typegram';
 
-import { aiChannels, espiId } from '../config';
-import AI from '../features/AI';
-import api from '../lib/api';
+import { aiChannels, espiId } from '../../config';
+import GPT from '../../core/GPT';
+import api from '../../lib/api';
 
 type TextMatchedContext = NarrowedContext<
   Context<Update> & { match: RegExpExecArray },
@@ -17,7 +17,7 @@ type TranscriptContext = NarrowedContext<Context<Update>, Update.MessageUpdate<M
 
 const validChannel = (channelId: number) => aiChannels.includes(channelId);
 
-export default class AIController {
+export default class GPTController {
   /**
    * Check is should respond to a incoming message
    */
@@ -43,7 +43,7 @@ export default class AIController {
     const context: ChatCompletionMessageParam | undefined = contextText
       ? { role: contextRole, content: contextText }
       : undefined;
-    const answer = await AI.ask(question, context);
+    const answer = await GPT.ask(question, context);
     ctx.reply(answer);
   }
 
@@ -57,7 +57,7 @@ export default class AIController {
     const link = await ctx.telegram.getFileLink(voice.file_id);
     const res = await api.get(link.href, { responseType: 'arraybuffer' });
     await fs.promises.writeFile(tmpFile, res.data);
-    const transcription = await AI.transcript(tmpFile);
+    const transcription = await GPT.transcript(tmpFile);
     ctx.reply(transcription);
     await fs.promises.rm(tmpFile);
   }

@@ -7,7 +7,7 @@ import { openAI } from '../config';
 
 const openai = new OpenAI({ apiKey: openAI.apiKey });
 
-export default class AI {
+export default class GPT {
   static async ask(question: string, context?: ChatCompletionMessageParam) {
     const messages: ChatCompletionMessageParam[] = [
       { role: 'system', content: 'Sus un bot de Telegram llamado Espi. Estás en el grupo "12 Cactus".' },

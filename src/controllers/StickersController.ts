@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 
-import stickers from '../features/stickers';
+import stickers from '../core/stickers';
 
 const StickersController = {
   replyWithSticker: async (ctx: Context<Update>, stickerPromise: Promise<string>) => {
