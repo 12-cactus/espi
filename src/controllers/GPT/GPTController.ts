@@ -1,30 +1,20 @@
 import fs from 'fs';
 
 import { ChatCompletionMessageParam } from 'openai/resources';
-import { Context } from 'telegraf';
-import { Message, Update } from 'telegraf/typings/core/types/typegram';
+import { Message } from 'telegraf/typings/core/types/typegram';
 
 import { TextMatchedContext, TranscriptContext } from './types';
-import { aiChannels, espiId } from '../../config';
+import { espiId } from '../../config';
 import GPT from '../../core/GPT';
 import api from '../../lib/api';
-
-const validChannel = (channelId: number) => aiChannels.includes(channelId);
+import { showTypingAction } from '../helpers';
 
 export default class GPTController {
-  /**
-   * Check is should respond to a incoming message
-   */
-  static shouldRespond(value: string, ctx: Context<Update>) {
-    const update = ctx.update as Update.MessageUpdate;
-    if (!validChannel(update.message.chat.id)) return null;
-    return /^espi +(?<question>.+)/i.exec(value);
-  }
-
   /**
    * Handle incoming question asking to ChatGPT API
    */
   static async handleQuestion(ctx: TextMatchedContext) {
+    showTypingAction(ctx);
     const question = (ctx.match?.groups?.question || '').trim();
     if (question.length < 7) {
       ctx.reply('Muy cortito amigo');
@@ -43,9 +33,9 @@ export default class GPTController {
 
   static async transcriptAudio(ctx: TranscriptContext) {
     // TODO:
-    // - Filtering by user in AI_CHANNELS
     // - Filtering by voice duration/size
-    // - Quick send a message saying "transcribing..." and then edit it with the transcription
+
+    showTypingAction(ctx);
     const voice = ctx.message?.voice;
     const tmpFile = `./voice-${ctx.message?.message_id}.mp3`;
     const link = await ctx.telegram.getFileLink(voice.file_id);

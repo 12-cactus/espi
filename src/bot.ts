@@ -5,6 +5,7 @@ import GPTController from './controllers/GPT/GPTController';
 import StickersController from './controllers/StickersController';
 import Holidays from './core/holidays';
 import logger from './lib/logger';
+import GPTMiddleware from './middlewares/GPTMiddleware';
 
 if (!process.env.BOT_TOKEN) {
   logger.error('You have to define BOT_TOKEN env var');
@@ -37,10 +38,14 @@ bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
-bot.hears(GPTController.shouldRespond, ctx => GPTController.handleQuestion(ctx));
+bot.hears(/^espi +(?<question>.+)/i, GPTMiddleware.authorizedChannel, GPTController.handleQuestion);
 
 // Audio
-bot.on(message('voice'), ctx => GPTController.transcriptAudio(ctx));
+bot.on(
+  message('voice'),
+  (ctx, next) => GPTMiddleware.authorizedChannel(ctx, next),
+  ctx => GPTController.transcriptAudio(ctx)
+);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);
