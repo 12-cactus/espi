@@ -1,13 +1,9 @@
-import fs from 'fs';
-
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 
 import AIController from './controllers/AIController';
 import StickersController from './controllers/StickersController';
-import AI from './features/AI';
 import Holidays from './features/holidays';
-import api from './lib/api';
 import logger from './lib/logger';
 
 if (!process.env.BOT_TOKEN) {
@@ -41,7 +37,10 @@ bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
-bot.hears(AIController.shouldRespond, AIController.handleQuestion);
+bot.hears(AIController.shouldRespond, ctx => AIController.handleQuestion(ctx));
+
+// Audio
+bot.on(message('voice'), ctx => AIController.transcriptAudio(ctx));
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);
@@ -51,18 +50,6 @@ bot.hears(/pattern +matching/i, StickersController.replyWithPatternMatchingDan);
 // Let me google that
 const searchLink = (query: string) => encodeURI(`https://www.google.com/search?q=${query}`);
 bot.hears(/^(g|gg|google)\s+(?<q>.+)/i, async ctx => ctx.reply(searchLink(ctx.match?.groups?.q || '')));
-
-// Audio
-bot.on(message('voice'), async ctx => {
-  const voice = ctx.message?.voice;
-  const tmpFile = `./voice-${ctx.message.message_id}.mp3`;
-  const link = await ctx.telegram.getFileLink(voice.file_id);
-  const res = await api.get(link.href, { responseType: 'arraybuffer' });
-  await fs.promises.writeFile(tmpFile, res.data);
-  const transcription = await AI.transcript(tmpFile);
-  ctx.reply(transcription);
-  await fs.promises.rm(tmpFile);
-});
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
