@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { Message } from 'telegraf/typings/core/types/typegram';
 
@@ -7,14 +5,16 @@ import { TextMatchedContext, TranscriptContext } from './types';
 import { espiId } from '../../config';
 import GPT from '../../core/GPT';
 import api from '../../lib/api';
-import { showTypingAction } from '../helpers';
+import BaseController from '../BaseController';
 
-export default class GPTController {
+export default class GPTController extends BaseController {
+  private static maxAudioSize = 10 * 1024 * 1024; // 10MB
+
   /**
    * Handle incoming question asking to ChatGPT API
    */
   static async handleQuestion(ctx: TextMatchedContext) {
-    showTypingAction(ctx);
+    this.showTypingAction(ctx);
     const question = (ctx.match?.groups?.question || '').trim();
     if (question.length < 7) {
       ctx.reply('Muy cortito amigo');
@@ -31,18 +31,23 @@ export default class GPTController {
     ctx.reply(answer);
   }
 
+  /**
+   * Transcript audio using ChatGPT API
+   */
   static async transcriptAudio(ctx: TranscriptContext) {
-    // TODO:
-    // - Filtering by voice duration/size
-
-    showTypingAction(ctx);
+    this.showTypingAction(ctx);
     const voice = ctx.message?.voice;
-    const tmpFile = `./voice-${ctx.message?.message_id}.mp3`;
     const link = await ctx.telegram.getFileLink(voice.file_id);
-    const res = await api.get(link.href, { responseType: 'arraybuffer' });
-    await fs.promises.writeFile(tmpFile, res.data);
-    const transcription = await GPT.transcript(tmpFile);
+    const { data: buffer } = await api.get<Uint8Array>(link.href, { responseType: 'arraybuffer' });
+
+    // If audio is too big, don't transcribe it and return
+    if (buffer.length > this.maxAudioSize) {
+      ctx.reply('El audio es muy grande, no puedo transcribirlo');
+      return;
+    }
+
+    // Transcript audio and reply with it
+    const transcription = await GPT.transcript(buffer, ctx.message?.message_id);
     ctx.reply(transcription);
-    await fs.promises.rm(tmpFile);
   }
 }
