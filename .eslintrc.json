@@ -24,11 +24,11 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".d.ts", ".ts"],
-        "moduleDirectory": ["src", "node_modules"]
+        "extensions": [".d.ts", ".ts"]
       },
       "typescript": {
-        "alwaysTryTypes": true
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.eslint.json"
       }
     }
   },
