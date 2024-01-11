@@ -9,7 +9,8 @@
   ],
   "env": {
     "node": true,
-    "es2021": true
+    "es2016": true,
+    "jest": true
   },
   "parserOptions": {
     "project": "./tsconfig.eslint.json",
