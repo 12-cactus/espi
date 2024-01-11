@@ -1,8 +1,7 @@
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
-
-import BaseController from './BaseController';
 import stickers from '../core/stickers';
+import BaseController from './BaseController';
 
 export default class StickersController extends BaseController {
   static async replyWithSticker(ctx: Context<Update>, stickerPromise: Promise<string>) {

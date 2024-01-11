@@ -1,8 +1,6 @@
 import fs from 'fs';
-
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-
 import { openAI } from '../config';
 import logger from '../lib/logger';
 

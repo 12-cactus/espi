@@ -1,6 +1,5 @@
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
-
 import GPTController from './controllers/GPT/GPTController';
 import StickersController from './controllers/StickersController';
 import Holidays from './core/holidays';

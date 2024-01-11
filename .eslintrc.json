@@ -44,22 +44,19 @@
     "sort-imports": [
       "error",
       {
-        "ignoreCase": false,
-        "ignoreDeclarationSort": true,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": true
+        "allowSeparatedGroups": true,
+        "ignoreDeclarationSort": true
       }
     ],
     "import/order": [
       "error",
       {
-        "groups": ["builtin", "external", "internal", ["sibling", "parent"], "index", "unknown"],
-        "newlines-between": "always",
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+          "order": "asc"
+        },
+        "newlines-between": "ignore"
       }
     ],
     "import/no-unresolved": "error"

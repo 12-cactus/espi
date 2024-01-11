@@ -1,9 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
-
+import { version } from '../package.json';
 import bot from './bot';
 import Holidays from './core/holidays';
 import BadRequestResponse from './exceptions/BadRequestResponse';
-import { version } from '../package.json';
 
 const router = express.Router();
 

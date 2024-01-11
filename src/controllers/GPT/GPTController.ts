@@ -1,11 +1,11 @@
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { Message } from 'telegraf/typings/core/types/typegram';
 
-import { TextMatchedContext, TranscriptContext } from './types';
 import { espiId } from '../../config';
 import GPT from '../../core/GPT';
 import api from '../../lib/api';
 import BaseController from '../BaseController';
+import { TextMatchedContext, TranscriptContext } from './types';
 
 export default class GPTController extends BaseController {
   private static maxAudioSize = 10 * 1024 * 1024; // 10MB
