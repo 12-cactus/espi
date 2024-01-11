@@ -17,9 +17,9 @@
   },
   "plugins": ["@typescript-eslint", "import"],
   "settings": {
-    "import/extensions": [".js", ".ts"],
+    "import/extensions": [".js", ".d.ts", ".ts"],
     "import/parsers": {
-      "@typescript-eslint/parser": [".js", ".ts"]
+      "@typescript-eslint/parser": [".js", ".d.ts", ".ts"]
     },
     "import/resolver": {
       "node": {
