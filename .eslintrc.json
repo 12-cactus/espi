@@ -61,6 +61,6 @@
         }
       }
     ],
-    "import/no-unresolved": ["error", { "commonjs": true }]
+    "import/no-unresolved": "error"
   }
 }
