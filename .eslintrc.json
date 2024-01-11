@@ -9,7 +9,8 @@
   ],
   "env": {
     "node": true,
-    "es2021": true
+    "es2016": true,
+    "jest": true
   },
   "parserOptions": {
     "project": "./tsconfig.eslint.json",
@@ -23,8 +24,11 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".d.ts", ".ts"],
-        "moduleDirectory": ["src", "node_modules"]
+        "extensions": [".d.ts", ".ts"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.eslint.json"
       }
     }
   },
@@ -58,6 +62,6 @@
         }
       }
     ],
-    "import/no-unresolved": ["error", { "commonjs": true }]
+    "import/no-unresolved": "error"
   }
 }

@@ -1,29 +1,28 @@
 import { Context } from 'telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 
-import stickers from '../features/stickers';
+import BaseController from './BaseController';
+import stickers from '../core/stickers';
 
-const StickersController = {
-  replyWithSticker: async (ctx: Context<Update>, stickerPromise: Promise<string>) => {
+export default class StickersController extends BaseController {
+  static async replyWithSticker(ctx: Context<Update>, stickerPromise: Promise<string>) {
     const sticker = await stickerPromise;
     if (!sticker) {
       await ctx.reply('Acá debería venir un sticker pero no lo encontré :(');
     }
 
     await ctx.replyWithSticker(sticker);
-  },
+  }
 
-  replyWithMaybeFacu: async (ctx: Context<Update>) => {
+  static async replyWithMaybeFacu(ctx: Context<Update>) {
     await StickersController.replyWithSticker(ctx, stickers.maybeFacu());
-  },
+  }
 
-  replyWithPaintedDog: async (ctx: Context<Update>) => {
+  static async replyWithPaintedDog(ctx: Context<Update>) {
     await StickersController.replyWithSticker(ctx, stickers.paintedDog());
-  },
+  }
 
-  replyWithPatternMatchingDan: async (ctx: Context<Update>) => {
+  static async replyWithPatternMatchingDan(ctx: Context<Update>) {
     await StickersController.replyWithSticker(ctx, stickers.patternMatchingDan());
-  },
-};
-
-export default StickersController;
+  }
+}

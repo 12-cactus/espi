@@ -1,15 +1,11 @@
 import { Telegraf } from 'telegraf';
+import { message } from 'telegraf/filters';
 
-import AIController from './controllers/AIController';
+import GPTController from './controllers/GPT/GPTController';
 import StickersController from './controllers/StickersController';
-import Holidays from './features/holidays';
+import Holidays from './core/holidays';
 import logger from './lib/logger';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const y18n = require('y18n');
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const { __ } = y18n({ locale: 'es' });
+import GPTMiddleware from './middlewares/GPTMiddleware';
 
 if (!process.env.BOT_TOKEN) {
   logger.error('You have to define BOT_TOKEN env var');
@@ -19,28 +15,37 @@ if (!process.env.BOT_TOKEN) {
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Handler for /start command.
+// Handler for /start command
 bot.start(ctx => ctx.reply('Welcome!'));
 
-// Handler for /help command.
+// Handler for /help command
 bot.help(ctx => ctx.reply('Send me a sticker'));
 
-// Registers middleware for provided update type.
-// bot.on('sticker', ctx => ctx.reply('👍'));
-
-// Registers middleware for handling text messages.
-bot.hears('ping', ctx => ctx.reply('ACK'));
-bot.hears('hi', ctx => ctx.reply(__`hi`));
-
-// Version
+// Basic and Info
+bot.hears(/^ping$/i, ctx => ctx.reply('ACK'));
+bot.hears(/(hi|hola)/, ctx => ctx.reply('👋'));
 bot.hears(/^espi +version/i, ctx => ctx.reply(`Soy ${ctx.botInfo?.username}@${process.env.npm_package_version}`));
+bot.hears(/^espi +id/i, ctx => {
+  const name = ctx.chat.type === 'private' ? `${ctx.chat.first_name} (@${ctx.chat.username})` : ctx.chat.title;
+  ctx.reply(`
+- Nombre: ${name}
+- ID: ${ctx.chat.id} (${ctx.chat.type})
+`);
+});
 
-// Espi commands
+// Espi Featuring
 bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
-bot.hears(AIController.shouldRespond, AIController.handleQuestion);
+bot.hears(/^espi +(?<question>.+)/i, GPTMiddleware.authorizedChannel, GPTController.handleQuestion);
+
+// Audio
+bot.on(
+  message('voice'),
+  (ctx, next) => GPTMiddleware.authorizedChannel(ctx, next),
+  ctx => GPTController.transcriptAudio(ctx)
+);
 
 // Reply With Stickers
 bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);

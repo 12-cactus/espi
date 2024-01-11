@@ -10,6 +10,8 @@ export const apisCA = {
 
 export const mainChannel = toNumber(process.env.MAIN_CHANNEL || '-1');
 
+export const ownerChannel = toNumber(process.env.OWNER_CHANNEL || '-1');
+
 export const aiChannels = (process.env.AI_CHANNELS ?? `${mainChannel}`).split(',').map(toNumber) || [];
 
 export const espiId = toNumber(process.env.BOT_TOKEN?.split(':')[0] || '-1');
