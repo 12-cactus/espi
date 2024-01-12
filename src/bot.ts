@@ -22,7 +22,7 @@ bot.help(ctx => ctx.reply('Send me a sticker'));
 
 // Basic and Info
 bot.hears(/^ping$/i, ctx => ctx.reply('ACK'));
-bot.hears(/(hi|hola)/, ctx => ctx.reply('👋'));
+bot.hears(/\b(hi|hola)\b/, ctx => ctx.reply('👋'));
 bot.hears(/^espi +version/i, ctx => ctx.reply(`Soy ${ctx.botInfo?.username}@${process.env.npm_package_version}`));
 bot.hears(/^espi +id/i, ctx => {
   const name = ctx.chat.type === 'private' ? `${ctx.chat.first_name} (@${ctx.chat.username})` : ctx.chat.title;
