@@ -1,10 +1,10 @@
-import { EspiClient } from '../lib/http-clients';
+import { espiClient } from '../lib/http-clients';
 import logger from '../lib/logger';
 
 const find = async (collection: string, emoji: string) => {
   try {
     const path = encodeURI(`/sticker/${collection}/${emoji}`);
-    const { data } = await EspiClient.get(path);
+    const { data } = await espiClient.get(path);
     return data.sticker.file_id as string;
   } catch (error) {
     logger.error(error);

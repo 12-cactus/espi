@@ -3,7 +3,7 @@ import { Message } from 'telegraf/typings/core/types/typegram';
 
 import { espiId } from '../../config';
 import GPT from '../../core/GPT';
-import { EspiClient } from '../../lib/http-clients';
+import { axiosClient } from '../../lib/http-clients';
 import BaseController from '../BaseController';
 import { TextMatchedContext, TranscriptContext } from './types';
 
@@ -38,7 +38,7 @@ export default class GPTController extends BaseController {
     this.showTypingAction(ctx);
     const voice = ctx.message?.voice;
     const link = await ctx.telegram.getFileLink(voice.file_id);
-    const { data: buffer } = await EspiClient.get<Uint8Array>(link.href, { responseType: 'arraybuffer' });
+    const { data: buffer } = await axiosClient.get<Uint8Array>(link.href, { responseType: 'arraybuffer' });
 
     // If audio is too big, don't transcribe it and return
     if (buffer.length > this.maxAudioSize) {
