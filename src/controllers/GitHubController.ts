@@ -1,7 +1,7 @@
-import github from '../../lib/github';
-import logger from '../../lib/logger';
-import BaseController from '../BaseController';
-import { BaseContext } from '../types';
+import github from '../lib/github';
+import logger from '../lib/logger';
+import BaseController from './BaseController';
+import { BaseContext } from './types';
 
 export default class GitHubController extends BaseController {
   static async listIssues(ctx: BaseContext) {

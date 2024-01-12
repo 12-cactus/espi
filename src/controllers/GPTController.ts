@@ -1,10 +1,10 @@
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { Message } from 'telegraf/typings/core/types/typegram';
 
-import { espiId } from '../../config';
-import GPT from '../../core/GPT';
-import { axiosClient } from '../../lib/http-clients';
-import BaseController from '../BaseController';
+import { espiId } from '../config';
+import GPT from '../core/GPT';
+import { axiosClient } from '../lib/http-clients';
+import BaseController from './BaseController';
 import { TextMatchedContext, TranscriptContext } from './types';
 
 export default class GPTController extends BaseController {
