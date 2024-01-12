@@ -1,6 +1,7 @@
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import GPTController from './controllers/GPT/GPTController';
+import GitHubController from './controllers/GitHub/GitHubController';
 import StickersController from './controllers/StickersController';
 import Holidays from './core/holidays';
 import logger from './lib/logger';
@@ -37,6 +38,7 @@ bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
+bot.hears(/^espi +issues$/i, async ctx => GitHubController.listIssues(ctx));
 bot.hears(/^espi +(?<question>.+)/i, GPTMiddleware.authorizedChannel, GPTController.handleQuestion);
 
 // Audio

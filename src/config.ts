@@ -28,6 +28,8 @@ export const openAI = {
   },
 };
 
+export const gitHubToken = process.env.GITHUB_TOKEN || '';
+
 const config = {
   aiChannels,
   apis,
