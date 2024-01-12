@@ -27,13 +27,42 @@ export default class GPT {
     if (context) messages.push(context);
     messages.push({ role: 'user', content: question });
 
-    const response = await openai.chat.completions.create({
-      ...openAI.defaultOptions,
-      messages,
-    });
-
+    const response = await openai.chat.completions.create({ ...openAI.defaultOptions, messages });
     const answer = response.choices[0].message?.content || '';
     return answer || 'Ups... no se que decirte';
+  }
+
+  /**
+   * Ask to create an issue in GitHub
+   * @param title Issue title
+   * @param description Issue description
+   * @returns Answer from the API
+   */
+  static async issueDescription(title: string, description?: string) {
+    const titleContent = `Este es el título que proveyó el usuario: "${title}"`;
+    const descriptionContent = description
+      ? `El usuario proveyó esta descripción corta: "${description}". Usala como referencia`
+      : 'No hay descripción';
+    const messages: ChatCompletionMessageParam[] = [
+      { role: 'system', content: 'Sos un Project Manager que se encarga de crear issues en un proyecto en GitHub.' },
+      {
+        role: 'system',
+        content: 'El proyecto es un bot de telegram escrito en TypeScript + NodeJS + Telegraf (Telegram Client)',
+      },
+      {
+        role: 'user',
+        content: `Necesito crear un issue y necesito que me proveas de una solamente la descripción en formato Markdown.`,
+      },
+      { role: 'user', content: titleContent },
+      { role: 'user', content: descriptionContent },
+    ];
+
+    const response = await openai.chat.completions.create({ ...openAI.defaultOptions, messages });
+    const answer = response.choices[0].message?.content || '';
+    if (!answer) throw new Error('No answer from ChatGPT API');
+
+    const mdContent = answer.match(/```(md)?\n(?<md>(.|\n)+)```/)?.groups?.md || answer;
+    return mdContent;
   }
 
   /**

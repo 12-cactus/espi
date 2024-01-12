@@ -39,7 +39,9 @@ bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
 bot.hears(/^espi +issues$/i, async ctx => GitHubController.listIssues(ctx));
-bot.hears(/^espi +issue +(?<question>.+)$/i, async ctx => GitHubController.listIssues(ctx));
+bot.hears(/^espi +issue +(?<title>[a-zA-ZÀ-ÿ0-9 _-]+)[.\n]?(?<description>.+)?$/i, async ctx =>
+  GitHubController.createIssue(ctx)
+);
 
 // ChatGPT answers
 bot.hears(
