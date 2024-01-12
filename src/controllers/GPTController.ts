@@ -1,11 +1,11 @@
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { Message } from 'telegraf/typings/core/types/typegram';
 
-import { espiId } from '../../config';
-import GPT from '../../core/GPT';
-import api from '../../lib/api';
-import BaseController from '../BaseController';
-import { TextMatchedContext, TranscriptContext } from './types';
+import { espiId } from '../config';
+import GPT from '../core/GPT';
+import { axiosClient } from '../lib/http-clients';
+import BaseController from './BaseController';
+import { RegexMatchedContext, VoiceMessageContext } from './types';
 
 export default class GPTController extends BaseController {
   private static maxAudioSize = 10 * 1024 * 1024; // 10MB
@@ -13,7 +13,7 @@ export default class GPTController extends BaseController {
   /**
    * Handle incoming question asking to ChatGPT API
    */
-  static async handleQuestion(ctx: TextMatchedContext) {
+  static async handleQuestion(ctx: RegexMatchedContext) {
     this.showTypingAction(ctx);
     const question = (ctx.match?.groups?.question || '').trim();
     if (question.length < 7) {
@@ -34,11 +34,11 @@ export default class GPTController extends BaseController {
   /**
    * Transcript audio using ChatGPT API
    */
-  static async transcriptAudio(ctx: TranscriptContext) {
+  static async transcriptAudio(ctx: VoiceMessageContext) {
     this.showTypingAction(ctx);
     const voice = ctx.message?.voice;
     const link = await ctx.telegram.getFileLink(voice.file_id);
-    const { data: buffer } = await api.get<Uint8Array>(link.href, { responseType: 'arraybuffer' });
+    const { data: buffer } = await axiosClient.get<Uint8Array>(link.href, { responseType: 'arraybuffer' });
 
     // If audio is too big, don't transcribe it and return
     if (buffer.length > this.maxAudioSize) {

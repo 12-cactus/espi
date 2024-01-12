@@ -1,6 +1,7 @@
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
-import GPTController from './controllers/GPT/GPTController';
+import GPTController from './controllers/GPTController';
+import GitHubController from './controllers/GitHubController';
 import StickersController from './controllers/StickersController';
 import Holidays from './core/holidays';
 import logger from './lib/logger';
@@ -32,18 +33,28 @@ bot.hears(/^espi +id/i, ctx => {
 `);
 });
 
-// Espi Featuring
+// Espi Commands
 bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
 bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
-bot.hears(/^espi +(?<question>.+)/i, GPTMiddleware.authorizedChannel, GPTController.handleQuestion);
+bot.hears(/^espi +issues$/i, async ctx => GitHubController.listIssues(ctx));
+bot.hears(/^espi +issue +(?<title>[a-zA-ZÀ-ÿ0-9 _-]+)[.\n]?(?<description>.+)?$/i, async ctx =>
+  GitHubController.createIssue(ctx)
+);
 
-// Audio
+// ChatGPT answers
+bot.hears(
+  /^espi +(?<question>.+)/i,
+  async (ctx, next) => GPTMiddleware.authorizedChannel(ctx, next),
+  async ctx => GPTController.handleQuestion(ctx)
+);
+
+// ChatGPT Audio Transcription
 bot.on(
   message('voice'),
-  (ctx, next) => GPTMiddleware.authorizedChannel(ctx, next),
-  ctx => GPTController.transcriptAudio(ctx)
+  async (ctx, next) => GPTMiddleware.authorizedChannel(ctx, next),
+  async ctx => GPTController.transcriptAudio(ctx)
 );
 
 // Reply With Stickers
