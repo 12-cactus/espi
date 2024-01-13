@@ -1,5 +1,27 @@
+import { Request, Response } from 'express';
 import { Context, NarrowedContext } from 'telegraf';
-import { Message, Update } from 'telegraf/typings/core/types/typegram';
+import { Message, Sticker, Update } from 'telegraf/typings/core/types/typegram';
+import { LongWeekend } from '../lib/long-weekend';
+
+/* Express Request/Response Types */
+
+export interface GetMeResponse extends Response {
+  send: (message: string) => any;
+}
+
+export interface GetStickerRequest extends Request {
+  params: { collection: string; emoji: string };
+}
+
+export interface GetStickerResponse extends Response {
+  json: (data: Sticker) => any;
+}
+
+export interface GetLongWeekendResponse extends Response {
+  json: (data: LongWeekend[]) => any;
+}
+
+/* Telegraf Context Types */
 
 export type BaseContext = NarrowedContext<Context, Update.MessageUpdate>;
 

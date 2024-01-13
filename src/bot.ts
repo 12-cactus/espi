@@ -58,9 +58,9 @@ bot.on(
 );
 
 // Reply With Stickers
-bot.hears(/\bfacuuu\b/i, StickersController.replyWithMaybeFacu);
-bot.hears(/pinto +\w+ +perro/i, StickersController.replyWithPaintedDog);
-bot.hears(/pattern +matching/i, StickersController.replyWithPatternMatchingDan);
+bot.hears(/\bfacuuu\b/i, async ctx => StickersController.replyWithSticker(ctx, 'docecactus', '👤'));
+bot.hears(/pinto +\w+ +perro/i, async ctx => StickersController.replyWithSticker(ctx, 'docecactus', '🐺'));
+bot.hears(/pattern +matching/i, async ctx => StickersController.replyWithSticker(ctx, 'docecactus', '🖕'));
 
 // Let me google that
 const searchLink = (query: string) => encodeURI(`https://www.google.com/search?q=${query}`);

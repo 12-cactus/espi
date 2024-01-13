@@ -1,12 +1,9 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { version } from '../package.json';
-import bot from './bot';
-import Holidays from './core/holidays';
-import BadRequestResponse from './exceptions/BadRequestResponse';
+import APIController from './controllers/APIController';
 
 const router = Router();
 
-type CallbackFn = (req: Request, res: Response, next: NextFunction) => any;
+type CallbackFn = (req: any, res: any, next: NextFunction) => any;
 
 const handling = (callback: CallbackFn) => async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -16,33 +13,8 @@ const handling = (callback: CallbackFn) => async (req: Request, res: Response, n
   }
 };
 
-// Express root endpoint
-router.get(
-  '/',
-  handling(async (req, res) => {
-    const me = await bot.telegram.getMe();
-    res.send(`I'm ${me.first_name} @${version}`);
-  })
-);
-
-router.get(
-  '/sticker/:collection/:emoji',
-  handling(async (req, res) => {
-    const { collection, emoji } = req.params;
-    const stickers = await bot.telegram.getStickerSet(collection);
-    const sticker = stickers.stickers.find(st => st.emoji === emoji);
-    if (!sticker) throw new BadRequestResponse(`Sticker ${emoji} not found in ${collection}`);
-
-    res.status(200).json({ sticker });
-  })
-);
-
-router.get(
-  '/long-weekend/',
-  handling(async (req, res) => {
-    const longWeekends = await Holidays.findNextLongWeekendsAR();
-    res.status(200).json(longWeekends);
-  })
-);
+router.get('/', handling(APIController.getMe));
+router.get('/sticker/:collection/:emoji', handling(APIController.getSticker));
+router.get('/long-weekend/', handling(APIController.getLongWeekend));
 
 export default router;
