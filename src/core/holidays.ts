@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { Context } from 'telegraf';
 import { apis, apisCA } from '../config';
-import { DayType, InfoDay, LongWeekend, longWeekendMap } from '../lib/long-weekend';
+import { DayType, InfoDay, LongWeekend, longWeekendMap } from './long-weekend';
 
 dayjs.extend(isSameOrAfter);
 

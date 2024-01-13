@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Context, NarrowedContext } from 'telegraf';
 import { Message, Sticker, Update } from 'telegraf/typings/core/types/typegram';
-import { LongWeekend } from '../lib/long-weekend';
+import { LongWeekend } from '../core/long-weekend';
 
 /* Express Request/Response Types */
 
