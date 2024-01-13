@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-
-import { InfoDay, LongWeekend, groupByCloseness, longWeekendMap } from '../../src/lib/long-weekend';
+import { InfoDay, LongWeekend, groupByCloseness, longWeekendMap } from '../../src/core/long-weekend';
 
 // ----------------------------------------------------------------------------------
 
