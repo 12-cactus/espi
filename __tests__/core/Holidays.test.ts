@@ -6,14 +6,23 @@ import Holidays from '../../src/core/Holidays-v2';
 
 describe('Testing Holidays', () => {
   describe('#fetchNextHolidaysAR', () => {
+    let holidays2023: string;
+    let holidays2024: string;
+
+    beforeAll(async () => {
+      holidays2023 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2023.json', 'utf8');
+      holidays2024 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2024.json', 'utf8');
+    });
+
+    beforeEach(async () => {
+      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2023?incluir=opcional').reply(200, holidays2023);
+      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2024?incluir=opcional').reply(200, holidays2024);
+    });
+
     it('fetch next holidays from 2023-04-03 (default = 7)', async () => {
       // arrange
       const amount = 7;
       const today = dayjs('2023-04-03');
-      const holidays2023 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2023.json', 'utf8');
-      const holidays2024 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2024.json', 'utf8');
-      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2023?incluir=opcional').reply(200, holidays2023);
-      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2024?incluir=opcional').reply(200, holidays2024);
 
       // act
       const holidays = await Holidays.fetchNextHolidaysAR(today);
@@ -35,10 +44,6 @@ describe('Testing Holidays', () => {
       // arrange
       const amount = 2;
       const today = dayjs('2023-04-03');
-      const holidays2023 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2023.json', 'utf8');
-      const holidays2024 = await fs.promises.readFile('./__tests__/__fixtures__/get.feriadosAR-2024.json', 'utf8');
-      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2023?incluir=opcional').reply(200, holidays2023);
-      nock('https://nolaborables.com.ar/').get('/api/v2/feriados/2024?incluir=opcional').reply(200, holidays2024);
 
       // act
       const holidays = await Holidays.fetchNextHolidaysAR(today, amount);
