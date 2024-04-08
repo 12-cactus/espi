@@ -9,6 +9,9 @@ import { HolidayResponseAR, HolidayResponseCA } from './types';
 
 dayjs.extend(isSameOrAfter);
 
+/**
+ * Class related to getting holidays.
+ */
 export default class Holidays {
   static async fetchNextHolidaysAR(dayFrom = dayjs(), amount = 7) {
     const year = dayFrom.year();
@@ -43,9 +46,4 @@ export default class Holidays {
 
     return holidays;
   }
-
-  // const data = [...resThisYear.data.province.holidays, ...resNextYear.data.province.holidays];
-  // const days = data.filter(isAfterTodayCA).map(toStringItemCA).slice(0, 7);
-  // const content = `🇨🇦 Prochaines Férié\n\n${days.join('\n')}`;
-  // ctx.replyWithMarkdownV2(markdownEscape(content));
 }
