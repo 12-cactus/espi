@@ -10,8 +10,19 @@ export default class HolidaysController extends BaseController {
     const today = dayjs();
 
     const holidays = await Holidays.fetchNextHolidaysAR(today);
-    const days = holidays.map(infoDay => toMarkdownDay(infoDay)).slice(0, 7);
+    const days = holidays.map(infoDay => toMarkdownDay(infoDay));
     const content = `🇦🇷 Próximos Feriados\n\n${days.join('\n')}`;
+
+    ctx.replyWithMarkdownV2(markdownEscape(content));
+  }
+
+  static async holidaysCA(ctx: BaseContext) {
+    this.showTypingAction(ctx);
+    const today = dayjs();
+
+    const holidays = await Holidays.fetchNextHolidaysCA(today);
+    const days = holidays.map(infoDay => toMarkdownDay(infoDay));
+    const content = `🇨🇦 Prochaines Férié\n\n${days.join('\n')}`;
 
     ctx.replyWithMarkdownV2(markdownEscape(content));
   }

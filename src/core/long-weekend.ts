@@ -7,6 +7,7 @@ dayjs.extend(weekday);
 
 export type InfoDay = {
   name: string;
+  isoDate: string;
   date: Dayjs;
   type: DayType;
   isRestingDay: boolean;
@@ -64,10 +65,12 @@ function toInfoDay(date: Dayjs, holidays: InfoDay[]): InfoDay {
   const name = infoDay ? infoDay.name : date.format('dddd');
   const type: DayType = infoDay ? parseHolidayType(date, holidays) : parseWeekdayType(date);
   const isRestingDay = ['touristic-bridge', 'national-holiday', 'weekend'].includes(type);
+  const isoDate = date.toISOString().split('T')[0];
 
   return {
     name,
     date,
+    isoDate,
     type,
     isRestingDay,
   };
@@ -77,6 +80,7 @@ function toRestingDay(typed: InfoDay): InfoDay {
   return {
     name: typed.name,
     date: typed.date,
+    isoDate: typed.isoDate,
     type: typed.type,
     isRestingDay: true,
   };

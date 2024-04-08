@@ -24,6 +24,7 @@ describe('Testing controllers helpers', () => {
       const infoDay = (name: string, date: string): InfoDay => ({
         name,
         date: dayjs(date),
+        isoDate: date,
         type: 'national-holiday',
         isRestingDay: true,
       });

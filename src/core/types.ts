@@ -17,8 +17,36 @@ export type HolidayAR = {
 };
 
 /**
+ * Type for holidays from canada-holidays.ca
+ */
+export interface HolidayCA {
+  id: number;
+  date: string;
+  nameEn: string;
+  nameFr: string;
+  federal: number;
+  observedDate: string;
+}
+
+/**
  * Type used in axios for holidays response when GET nolaborables.com.ar
  */
-export type HolidayResponse = {
+export type HolidayResponseAR = {
   data: HolidayAR[];
+};
+
+/**
+ * Type used in axios for holidays response when GET canada-holidays.ca
+ */
+export type HolidayResponseCA = {
+  data: {
+    province: {
+      id: string;
+      nameEn: string;
+      nameFr: string;
+      sourceLink: string;
+      sourceEn: string;
+      holidays: HolidayCA[];
+    };
+  };
 };

@@ -66,6 +66,7 @@ const mapWithYear = (h: HolidayAR, year: number): InfoDay => {
   return {
     name: h.motivo,
     date: dayjs(`${year}-${month}-${day}`),
+    isoDate: `${year}-${month}-${day}`,
     type,
     isRestingDay: type === 'national-holiday' || type === 'touristic-bridge',
   };
