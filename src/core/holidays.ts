@@ -41,11 +41,6 @@ function markdownEscape(text: string): string {
 
 const isAfterTodayCA = (holiday: HolidayCA) => fns.isAfter(new Date(holiday.date), today());
 
-const toStringItem = (day: InfoDay) => {
-  const diff = day.date.diff(dayjs(), 'day');
-  return `- *${day.date.format('DD MMM')}* ${day.name} (${diff}d)`;
-};
-
 const toStringItemCA = (holiday: HolidayCA) => {
   const date = new Date(holiday.date);
   const diff = fns.differenceInDays(date, today());
@@ -71,6 +66,7 @@ const mapWithYear = (h: HolidayAR, year: number): InfoDay => {
   return {
     name: h.motivo,
     date: dayjs(`${year}-${month}-${day}`),
+    isoDate: `${year}-${month}-${day}`,
     type,
     isRestingDay: type === 'national-holiday' || type === 'touristic-bridge',
   };
@@ -90,16 +86,6 @@ const fetchNextHolidaysAR = async () => {
 };
 
 // ----- ----- Exported Functions ----- -----
-
-/**
- * Holidays AR
- */
-const holidaysAR = async (ctx: Context) => {
-  const holidays = await fetchNextHolidaysAR();
-  const days = holidays.map(h => toStringItem(h)).slice(0, 7);
-
-  ctx.replyWithMarkdownV2(markdownEscape(`🇦🇷 Próximos Feriados\n\n${days.join('\n')}`));
-};
 
 const findNextLongWeekendsAR = async (): Promise<LongWeekend[]> => {
   const holidays = await fetchNextHolidaysAR();
@@ -155,7 +141,6 @@ const holidaysCA = async (ctx: Context) => {
 };
 
 const Holidays = {
-  holidaysAR,
   holidaysCA,
   nextLongWeekendAR,
   nextThreeLongWeekendsAR,

@@ -2,6 +2,7 @@ import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import GPTController from './controllers/GPTController';
 import GitHubController from './controllers/GitHubController';
+import HolidaysController from './controllers/HolidaysController';
 import StickersController from './controllers/StickersController';
 import Holidays from './core/holidays';
 import logger from './lib/logger';
@@ -34,8 +35,8 @@ bot.hears(/^espi +id/i, ctx => {
 });
 
 // Espi Commands
-bot.hears(/^espi +feriados/i, Holidays.holidaysAR);
-bot.hears(/^espi +(férié|ferie)/i, Holidays.holidaysCA);
+bot.hears(/^espi +feriados/i, async ctx => HolidaysController.holidaysAR(ctx));
+bot.hears(/^espi +(férié|ferie)/i, async ctx => HolidaysController.holidaysCA(ctx));
 bot.hears(/^espi +(finde +largo|fl)/i, Holidays.nextLongWeekendAR);
 bot.hears(/^espi +(findes +largos|ffll)/i, Holidays.nextThreeLongWeekendsAR);
 bot.hears(/^espi +issues$/i, async ctx => GitHubController.listIssues(ctx));

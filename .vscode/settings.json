@@ -2,5 +2,9 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
+  },
+  "markdownlint.config": {
+    "default": true,
+    "MD041": false
   }
 }

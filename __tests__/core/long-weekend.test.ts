@@ -6,6 +6,7 @@ import { InfoDay, LongWeekend, groupByCloseness, longWeekendMap } from '../../sr
 const InfoDayBuilder = (options: any): InfoDay => ({
   name: options.name || 'none',
   date: dayjs(options.date || '2022-01-01'),
+  isoDate: options.date || '2022-01-01',
   type: options.type || 'unknown',
   isRestingDay: options.isRestingDay || false,
 });

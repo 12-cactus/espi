@@ -1,3 +1,6 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/17026646c91347628d29b552195035e0)](https://app.codacy.com/gh/12-cactus/espi/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/17026646c91347628d29b552195035e0)](https://app.codacy.com/gh/12-cactus/espi/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+
 # Espinoso
 
 ## TL;DR

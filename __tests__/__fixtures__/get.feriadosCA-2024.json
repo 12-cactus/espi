@@ -1,0 +1,83 @@
+{
+  "province": {
+    "id": "QC",
+    "nameEn": "Quebec",
+    "nameFr": "Québec",
+    "sourceLink": "https://www2.gouv.qc.ca/entreprises/portail/quebec/ressourcesh?lang=fr&g=ressourcesh&sg=personnel&t=o&e=2318829344:3908165687",
+    "sourceEn": "Jours fériés, chômés et payés",
+    "holidays": [
+      {
+        "id": 1,
+        "date": "2024-01-01",
+        "nameEn": "New Year’s Day",
+        "nameFr": "Jour de l’An",
+        "federal": 1,
+        "observedDate": "2024-01-01"
+      },
+      {
+        "id": 7,
+        "date": "2024-03-29",
+        "nameEn": "Good Friday",
+        "nameFr": "Vendredi saint",
+        "federal": 1,
+        "observedDate": "2024-03-29"
+      },
+      {
+        "id": 10,
+        "date": "2024-05-20",
+        "nameEn": "National Patriots’ Day",
+        "nameFr": "Journée nationale des patriotes",
+        "federal": 0,
+        "observedDate": "2024-05-20"
+      },
+      {
+        "id": 13,
+        "date": "2024-06-24",
+        "nameEn": "Saint-Jean-Baptiste Day",
+        "nameFr": "Saint-Jean-Baptiste / Fête nationale du Québec",
+        "federal": 0,
+        "observedDate": "2024-06-24"
+      },
+      {
+        "id": 15,
+        "date": "2024-07-01",
+        "nameEn": "Canada Day",
+        "nameFr": "Fête du Canada",
+        "federal": 1,
+        "observedDate": "2024-07-01"
+      },
+      {
+        "id": 26,
+        "date": "2024-09-02",
+        "nameEn": "Labour Day",
+        "nameFr": "Fête du travail",
+        "federal": 1,
+        "observedDate": "2024-09-02"
+      },
+      {
+        "id": 29,
+        "date": "2024-10-14",
+        "nameEn": "Thanksgiving",
+        "nameFr": "Action de grâce",
+        "federal": 1,
+        "observedDate": "2024-10-14"
+      },
+      {
+        "id": 31,
+        "date": "2024-12-25",
+        "nameEn": "Christmas Day",
+        "nameFr": "Noël",
+        "federal": 1,
+        "observedDate": "2024-12-25"
+      }
+    ],
+    "nextHoliday": {
+      "id": 10,
+      "date": "2024-05-20",
+      "nameEn": "National Patriots’ Day",
+      "nameFr": "Journée nationale des patriotes",
+      "federal": 0,
+      "observedDate": "2024-05-20"
+    }
+  }
+}
