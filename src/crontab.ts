@@ -24,17 +24,24 @@ const crontab = {
   }),
 
   holidays: Job('15 9 * * *', async () => {
-    const nextLongWeekends = await Holidays.findNextLongWeekendsAR();
-    if (nextLongWeekends.length === 0) return;
+    try {
+      const nextLongWeekends = await Holidays.findNextLongWeekendsAR();
+      if (nextLongWeekends.length === 0) {
+        return; // Silent fail - API may be down or no holidays available
+      }
 
-    const longWeekend = nextLongWeekends[0];
-    const daysLeft = longWeekend.start.diff(dayjs(), 'day');
-    const shouldSend = [1, 8, 15].includes(daysLeft);
-    if (shouldSend) {
-      const format = (date: Dayjs) => date.format('ddd DD/MMM');
-      const range = `${format(longWeekend.start)} -- ${format(longWeekend.end)}`;
-      const content = `_Próximo finde largo_\n\n📌 *${longWeekend.name}*\n📆 ${range}\n⏳ faltan ${daysLeft} días`;
-      await bot.telegram.sendMessage(mainChannel, content, { parse_mode: 'Markdown' });
+      const longWeekend = nextLongWeekends[0];
+      const daysLeft = longWeekend.start.diff(dayjs(), 'day');
+      const shouldSend = [1, 8, 15].includes(daysLeft);
+      if (shouldSend) {
+        const format = (date: Dayjs) => date.format('ddd DD/MMM');
+        const range = `${format(longWeekend.start)} -- ${format(longWeekend.end)}`;
+        const content = `_Próximo finde largo_\n\n📌 *${longWeekend.name}*\n📆 ${range}\n⏳ faltan ${daysLeft} días`;
+        await bot.telegram.sendMessage(mainChannel, content, { parse_mode: 'Markdown' });
+      }
+    } catch (error) {
+      // Log any unexpected errors, don't crash the process
+      console.error('[Crontab] Error in holidays job:', error instanceof Error ? error.message : error);
     }
   }),
 };

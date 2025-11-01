@@ -1,7 +1,10 @@
-ignores:
-  - '@jest/globals'
-  - '@types/jest'
-  - nodemon
-  - prettier
-  - ts-node
-skip-missing: true
+{
+  "ignores": [
+    "@jest/globals",
+    "@types/jest",
+    "nodemon",
+    "prettier",
+    "ts-node"
+  ],
+  "skip-missing": true
+}

@@ -46,3 +46,4 @@ node_modules/
 
 # Build
 dist/
+.aider*
