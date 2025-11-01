@@ -24,6 +24,7 @@
     "coverage": "jest --coverage",
     "lint": "eslint --ext .ts ./",
     "release": "dotenv release-it",
+    "depcheck": "depcheck --config .depcheckrc",
     "tunnel": "sh .scripts/start-tunnel.sh",
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
   },
