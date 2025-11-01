@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import dotenv from 'dotenv';
 
 // Dotenv configuration should be called before import any internal module

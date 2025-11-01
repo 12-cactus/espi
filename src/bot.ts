@@ -10,7 +10,6 @@ import GPTMiddleware from './middlewares/GPTMiddleware';
 
 if (!process.env.BOT_TOKEN) {
   logger.error('You have to define BOT_TOKEN env var');
-  // eslint-disable-next-line no-process-exit
   process.exit(1);
 }
 
