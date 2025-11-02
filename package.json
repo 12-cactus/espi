@@ -27,7 +27,7 @@
     "depcheck": "depcheck --config .depcheckrc",
     "ncu": "node ncu-changelog.js",
     "tunnel": "sh .scripts/start-tunnel.sh",
-    "prepare": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
+    "prepare": "if [ \"$NODE_ENV\" != production ]; then husky; fi"
   },
   "volta": {
     "node": "20.17.0",
@@ -60,7 +60,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lint-staged": "15.2.0",
     "nock": "14.0.10",
