@@ -14,7 +14,7 @@
   },
   "main": "src/index.ts",
   "engines": {
-    "node": "20.10.0"
+    "node": "20.12"
   },
   "scripts": {
     "start": "node dist/src/index.js",
@@ -29,7 +29,7 @@
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky install; fi"
   },
   "volta": {
-    "node": "20.10.0",
+    "node": "20.12.2",
     "yarn": "1.22.22"
   },
   "dependencies": {
@@ -65,7 +65,7 @@
     "nock": "13.4.0",
     "nodemon": "3.0.2",
     "prettier": "3.2.5",
-    "release-it": "^17.0.1",
+    "release-it": "^19.0.5",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
