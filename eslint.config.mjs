@@ -1,21 +1,13 @@
 import js from '@eslint/js';
 import tseslintPlugin from '@typescript-eslint/eslint-plugin';
 import tseslintParser from '@typescript-eslint/parser';
-import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
 
 export default [
   {
-    ignores: [
-      'dist/**',
-      'coverage/**',
-      'node_modules/**',
-      '.git/**',
-      'logs/**',
-      'jest.config.js',
-      '**/*.d.ts',
-    ],
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.git/**', 'logs/**', 'jest.config.js', '**/*.d.ts'],
   },
   js.configs.recommended,
   {
@@ -62,13 +54,6 @@ export default [
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-        },
-      ],
-      '@typescript-eslint/lines-between-class-members': [
-        'error',
-        'always',
-        {
-          exceptAfterSingleLine: true,
         },
       ],
       // Import rules
