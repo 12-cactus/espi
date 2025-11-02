@@ -79,13 +79,11 @@ languageOptions: {
 ### Reglas Importantes
 
 1. **No-unused-vars:**
-
    - Desactivada la regla base de ESLint
    - Usamos `@typescript-eslint/no-unused-vars`
    - Comentarios `// eslint-disable-next-line @typescript-eslint/no-unused-vars` funcionan correctamente
 
 2. **Import Order:**
-
    - Grupos: builtin → external → internal → parent → sibling → index
    - Alfabético dentro de cada grupo
 
@@ -114,7 +112,7 @@ Si hay errores, pueden ser legítimos o necesitar ajustes. Auto-fix:
 yarn lint --fix
 ```
 
-### 3. Commitear cambios
+### 3. Commit cambios
 
 ```bash
 git add package.json yarn.lock eslint.config.mjs .eslintrc.json.bak
@@ -133,7 +131,7 @@ git commit -m "refactor: upgrade eslint to v9 with flat config
 
 ### Por qué `.mjs` y no module: true?
 
-```
+```txt
 ❌ NO: "type": "module" en package.json
    → Hubiera roto: Jest (CommonJS), TypeScript compilation, todo
 
@@ -173,22 +171,18 @@ Todas tus reglas custom se mantienen:
 
 ## 🐛 Troubleshooting
 
-**Error: "Cannot find package 'typescript-eslint'"**
+### Error: "Cannot find package 'typescript-eslint'"
 
 - Solución: Usar `@typescript-eslint/eslint-plugin` e `@typescript-eslint/parser` por separado
 
-**Error: "process is not defined"**
+### Error: "process is not defined"
 
 - Solución: ✅ Ya arreglado (globals.node configurado)
 
-**Error: "@typescript-eslint/no-unused-vars" no funciona con disable comment**
+### Error: "@typescript-eslint/no-unused-vars" no funciona con disable comment
 
 - Solución: ✅ Ya arreglado (disabled base rule, usamos TS version)
 
-**Jest globals no reconocidos**
+### Jest globals no reconocidos
 
 - Solución: ✅ Ya arreglado (config específico para `__tests__/**/*.test.ts`)
-
----
-
-**¿Dudas o necesitas cambios adicionales?**
