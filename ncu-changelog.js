@@ -14,7 +14,7 @@ function getRepoUrl(packageName) {
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     return result.trim();
-  } catch (error) {
+  } catch {
     return null;
   }
 }

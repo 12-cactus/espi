@@ -7,11 +7,12 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.git/**', 'logs/**', 'jest.config.js', '**/*.d.ts'],
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.git/**', 'logs/**', '**/*.d.ts'],
   },
   js.configs.recommended,
+  // TypeScript files in src and __tests__ with strict TS checking
   {
-    files: ['**/*.ts', '**/*.js'],
+    files: ['src/**/*.ts', '__tests__/**/*.ts'],
     languageOptions: {
       parser: tseslintParser,
       parserOptions: {
@@ -28,7 +29,7 @@ export default [
     settings: {
       'import/extensions': ['.js', '.ts'],
       'import/parsers': {
-        '@typescript-eslint/parser': ['.js', '.ts'],
+        '@typescript-eslint/parser': ['.ts'],
       },
       'import/resolver': {
         node: {
@@ -77,6 +78,53 @@ export default [
       ],
       'import/no-unresolved': 'error',
       'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', '**/*.test.js'] }],
+    },
+  },
+  // Root-level JavaScript utilities (plain JS, no TS parser)
+  {
+    files: ['*.js', '*.mjs'],
+    languageOptions: {
+      sourceType: 'module',
+      ecmaVersion: 2024,
+      globals: globals.node,
+    },
+    plugins: {
+      import: importPlugin,
+    },
+    settings: {
+      'import/extensions': ['.js', '.mjs'],
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.mjs'],
+        },
+      },
+    },
+    rules: {
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+      // Import rules
+      'sort-imports': [
+        'error',
+        {
+          allowSeparatedGroups: true,
+          ignoreDeclarationSort: true,
+        },
+      ],
+      'import/order': [
+        'error',
+        {
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
+          alphabetize: {
+            order: 'asc',
+          },
+          'newlines-between': 'ignore',
+        },
+      ],
     },
   },
   // Jest test files configuration
