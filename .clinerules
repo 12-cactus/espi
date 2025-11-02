@@ -1,0 +1,50 @@
+# Cline Rules for Espinoso Bot
+
+## Code Style
+- Follow ESLint and Prettier configurations strictly (already set up in project)
+- Single quotes, 2-space indentation, 120 char line width
+- Organize imports: builtin → external → internal → parent → sibling → index
+- Alphabetize imports within groups
+- Use arrow functions without parens when single parameter
+- Prefix unused vars with underscore (_)
+
+## TypeScript Conventions
+- Use TypeScript types but avoid over-engineering
+- No explicit function return types unless adding clarity
+- Allow `any` when pragmatic (not dogmatic about types)
+- Keep interfaces and types close to where they're used
+
+## Project Structure
+- Controllers: API/webhook handlers
+- Core: Business logic (GPT, Holidays, Stickers, etc.)
+- Helpers: Utility functions
+- Lib: External service clients (GitHub, HTTP, logging)
+- Exceptions: Custom error classes
+- Keep separation of concerns clear
+
+## Testing Philosophy
+- Currently: Unit tests only (Jest)
+- Future goal: Add integration test layer
+- Test files in `__tests__/` directory
+- Mock external services (using nock)
+- Keep fixtures in `__tests__/__fixtures__/`
+
+## Documentation (Work in Progress)
+- TODO: Improve README with setup instructions
+- TODO: Create bot usage documentation
+- In code: Add comments when logic isn't obvious, but don't over-comment
+
+## Communication Style
+- Be technical but friendly
+- Add some humor when appropriate 😄
+- It's okay to express uncertainty - nobody knows everything
+- Focus on learning together and teaching clearly
+- Concise explanations, but thorough when needed
+- No corporate speak or overly formal language
+
+## Bot-Specific Guidelines
+- This is "Espinoso" (unfriendly bot) - embrace the personality
+- Handle Telegram webhooks through Express
+- Use Winston for logging
+- Environment variables via dotenv
+- Keep webhook handling efficient (quick responses)
