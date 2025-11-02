@@ -7,7 +7,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.git/**', 'logs/**', '**/*.d.ts'],
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.git/**', 'logs/**', '**/*.d.ts', '.scripts/**'],
   },
   js.configs.recommended,
   // TypeScript files in src and __tests__ with strict TS checking
