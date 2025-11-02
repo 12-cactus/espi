@@ -5,10 +5,24 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Validates that a package name is safe (contains only valid npm package characters)
+ */
+function isValidPackageName(name) {
+  // npm package names must be lowercase, can contain hyphens and underscores
+  // This regex matches valid npm package names
+  return /^(@?[a-z0-9]([a-z0-9-]*[a-z0-9])?\/)?[a-z0-9]([a-z0-9._-]*[a-z0-9])?$/.test(name);
+}
+
+/**
  * Fetches the repository URL for a given package
  */
 function getRepoUrl(packageName) {
   try {
+    // Validate package name to prevent command injection
+    if (!isValidPackageName(packageName)) {
+      return null;
+    }
+
     const result = execSync(`npm view ${packageName} repository.url`, {
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
@@ -41,13 +55,31 @@ function formatChangelogUrl(repoUrl) {
 }
 
 /**
+ * Safely reads package.json from the current working directory
+ */
+function readPackageJson() {
+  const cwd = process.cwd();
+  const packageJsonPath = path.join(cwd, 'package.json');
+
+  // Validate that the resolved path is within the current working directory
+  // to prevent directory traversal attacks
+  const resolvedPath = path.resolve(packageJsonPath);
+  const resolvedCwd = path.resolve(cwd);
+
+  if (!resolvedPath.startsWith(resolvedCwd)) {
+    throw new Error('Invalid package.json path');
+  }
+
+  return JSON.parse(fs.readFileSync(resolvedPath, 'utf-8'));
+}
+
+/**
  * Main function
  */
 async function main() {
   try {
     // Read current package.json
-    const packageJsonPath = path.join(process.cwd(), 'package.json');
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+    const packageJson = readPackageJson();
     const currentDeps = { ...packageJson.dependencies, ...packageJson.devDependencies };
 
     // Run ncu and get JSON output
