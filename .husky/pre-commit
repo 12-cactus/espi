@@ -1,5 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-echo 'linting staged'
+echo '🐶 Husky pre-commit: npx lint-staged'
 npx lint-staged

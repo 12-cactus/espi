@@ -5,7 +5,6 @@ const { BOT_DOMAIN } = process.env;
 
 if (!BOT_DOMAIN) {
   logger.error('You have to define BOT_DOMAIN env var');
-  // eslint-disable-next-line no-process-exit
   process.exit(1);
 }
 
