@@ -1,0 +1,4 @@
+# Codacy analyzes product code. .github/ is CI configuration and PR boilerplate, and the
+# PR templates start at H2 on purpose: GitHub renders the PR title as the H1 above them.
+exclude_paths:
+  - '.github/**'
