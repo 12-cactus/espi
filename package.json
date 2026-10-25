@@ -25,7 +25,7 @@
     "lint": "eslint .",
     "release": "dotenv release-it",
     "depcheck": "depcheck --config .depcheckrc",
-    "ncu": "node ncu-changelog.js",
+    "ncu": "node .scripts/ncu-changelog.js",
     "tunnel": "sh .scripts/start-tunnel.sh",
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky; fi"
   },
