@@ -16,7 +16,7 @@ export default class GitHubController extends BaseController {
       const issues = await github.getIssues();
       const issuesList = issues.map(issue => `\\- [\\#${issue.number}](${issue.html_url}) ${issue.title}`).join('\n');
       const content = `*Issues Abiertos*\n\n${issuesList}`;
-      ctx.replyWithMarkdownV2(content, { disable_web_page_preview: true });
+      ctx.replyWithMarkdownV2(content, { link_preview_options: { is_disabled: true } });
     } catch (error) {
       logger.error(error);
       ctx.reply('Hubo un error al obtener los issues');
@@ -37,7 +37,7 @@ export default class GitHubController extends BaseController {
       const issue = await github.setIssue(title, `${gptDescription}\n\nCreado por ${user}`);
 
       const content = `*Issue creado*\n\n[\\#${issue.number}](${issue.html_url}) ${issue.title}`;
-      ctx.replyWithMarkdownV2(content, { disable_web_page_preview: true });
+      ctx.replyWithMarkdownV2(content, { link_preview_options: { is_disabled: true } });
     } catch (error) {
       logger.error(error);
       ctx.reply('Hubo un error al intentar crear el issue');
