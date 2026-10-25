@@ -14,7 +14,7 @@
   },
   "main": "src/index.ts",
   "engines": {
-    "node": "20.17"
+    "node": ">=24.22.1"
   },
   "scripts": {
     "start": "node dist/src/index.js",
@@ -30,7 +30,7 @@
     "prepare": "if [ \"$NODE_ENV\" != production ]; then husky; fi"
   },
   "volta": {
-    "node": "20.17.0",
+    "node": "24.22.1",
     "yarn": "1.22.22"
   },
   "dependencies": {
